@@ -33,7 +33,7 @@ st.title("Electricity Cost Calculator")
 
 # Multiselect for selecting the user's country of residence
 countries = sorted(list(conversion_rates.keys()))
-selected_countries = st.multiselect("Select your country of residence:", countries)
+#selected_countries = st.multiselect("Select your country of residence:", countries)
 
 # Checkbox for selecting appliances
 selected_appliances = st.multiselect("Select the appliances you own:", list(appliances.keys()))
@@ -58,8 +58,6 @@ for appliance in selected_appliances:
     # Display the calculated electricity cost
     st.write(f"The electricity cost for {appliance} is: ${electricity_cost:.2f}")
 
-# Display the total electricity cost
-st.subheader(f"Total Electricity Cost: ${total_cost:.2f}")
 
 # Currency conversion
 selected_currency = st.selectbox("Select your preferred currency:", list(conversion_rates.keys()))
