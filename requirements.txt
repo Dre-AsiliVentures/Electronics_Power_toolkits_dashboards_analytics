@@ -1,6 +1,4 @@
-forex_python.converter
 pandas
-pycountry
 streamlit
 openpyxl
 yfinance
