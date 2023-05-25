@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from currency_converter import CurrencyConverter
+from forex_python.converter import CurrencyRates
 
 # Define the appliances and their power ratings
 appliances = {
@@ -19,17 +19,11 @@ appliances = {
     'Chapati Maker': 1000
 }
 
-# Create CurrencyConverter object
-converter = CurrencyConverter()
-
-# Get all currency codes
-currencies = converter.currencies
-
 # Create Streamlit application
 st.title("Electricity Cost Calculator")
 
 # Multiselect for selecting the user's country of residence
-selected_countries = st.multiselect("Select your country of residence:", sorted(list(currencies.keys())))
+selected_countries = st.multiselect("Select your country of residence:", pd.read_csv('https://countrycode.org/api/csv/all')['ISO2'].to_list())
 
 # Checkbox for selecting appliances
 selected_appliances = st.multiselect("Select the appliances you own:", list(appliances.keys()))
@@ -57,8 +51,10 @@ for appliance in selected_appliances:
 # Display the total electricity cost
 st.subheader(f"Total Electricity Cost: ${total_cost:.2f}")
 
-# Currency conversion
-selected_currency = st.selectbox("Select your preferred currency:", sorted(list(currencies.keys())))
-converted_cost = converter.convert(total_cost, 'USD', selected_currency)
-
-st.subheader(f"Total Electricity Cost in {selected_currency}: {converted_cost:.2f}")
+# Currency conversion using forex-python
+if selected_countries:
+    c = CurrencyRates()
+    
+    for currency in selected_countries:
+        converted_cost = c.convert("USD", currency, total_cost)
+        st.subheader(f"Total Electricity Cost in {currency}: {converted_cost:.2f}")
