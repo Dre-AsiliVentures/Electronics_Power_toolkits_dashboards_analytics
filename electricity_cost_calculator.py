@@ -2,7 +2,8 @@ import pandas as pd
 import streamlit as st
 
 # Read the Excel file
-df = pd.read_excel('https://assets.zyrosite.com/mk3L02gpp7Hw45Xg/electricitypricemodel-mp8XzMQ2gPiGVPXP.xlsx')
+df = pd.read_excel('https://asiliventures.com/wp-content/uploads/2023/05/ElectricityPriceModel.xlsx')
+#df = pd.read_excel('https://assets.zyrosite.com/mk3L02gpp7Hw45Xg/electricitypricemodel-mp8XzMQ2gPiGVPXP.xlsx')
 
 # Create Streamlit application
 st.title("Electricity Cost Calculator")
@@ -45,4 +46,3 @@ for appliance in selected_appliances:
 
 # Display the total electricity cost
 st.subheader(f"Total Electricity Cost: ${total_cost:.2f}")
-
