@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import pycountry
-from forex_python.converter import CurrencyRates
+import requests
 
 # Define the appliances and their power ratings
 appliances = {
@@ -68,15 +68,23 @@ conversion_rates = {
     # Add more currencies and their rates here
 }
 
-# Currency conversion using forex-python
+# Currency conversion using ExchangeRatesAPI
 if selected_countries:
-    c = CurrencyRates()
+    base_currency = 'USD'
 
     for country in selected_countries:
         currency_code = pycountry.countries.get(name=country).alpha_3
-        converted_cost = c.convert("USD", currency_code, total_cost)
+        conversion_url = f"https://api.exchangerate-api.com/v4/latest/{base_currency}"
 
-        if currency_code in conversion_rates:
-            converted_cost *= conversion_rates[currency_code]
+        try:
+            response = requests.get(conversion_url)
+            data = response.json()
+            converted_cost = total_cost * data['rates'][currency_code]
 
-        st.subheader(f"Total Electricity Cost in {country}: {converted_cost:.2f}")
+            if currency_code in conversion_rates:
+                converted_cost *= conversion_rates[currency_code]
+
+            st.subheader(f"Total Electricity Cost in {country}: {converted_cost:.2f}")
+
+        except requests.exceptions.RequestException as e:
+            st.error(f"Error occurred during currency conversion: {e}")
