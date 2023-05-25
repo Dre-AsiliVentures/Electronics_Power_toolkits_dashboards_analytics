@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import pycountry
-import requests
+from forex_python.converter import CurrencyRates
 
 # Define the appliances and their power ratings
 appliances = {
@@ -58,37 +58,14 @@ for appliance in selected_appliances:
 # Display the total electricity cost
 st.subheader(f"Total Electricity Cost: ${total_cost:.2f}")
 
-# Conversion rates dictionary for currency conversion
-conversion_rates = {
-    'USD': 1.0,
-    'EUR': 0.82,
-    'GBP': 0.71,
-    'CAD': 1.21,
-    'AUD': 1.28,
-    # Add more currencies and their rates here
-}
+# Currency conversion using forex-python library
+c = CurrencyRates()
 
-# Currency conversion using ExchangeRatesAPI
-if selected_countries:
-    base_currency = 'USD'
-
-    for country in selected_countries:
+# Perform currency conversion for selected countries
+for country in selected_countries:
+    try:
         currency_code = pycountry.countries.get(name=country).alpha_3
-        conversion_url = f"https://api.exchangerate-api.com/v4/latest/{base_currency}"
-
-        try:
-            response = requests.get(conversion_url)
-            data = response.json()
-
-            if currency_code in data['rates']:
-                converted_cost = total_cost * data['rates'][currency_code]
-
-                if currency_code in conversion_rates:
-                    converted_cost *= conversion_rates[currency_code]
-
-                st.subheader(f"Total Electricity Cost in {country}: {converted_cost:.2f}")
-            else:
-                st.warning(f"Currency conversion rate not available for {country}")
-
-        except requests.exceptions.RequestException as e:
-            st.error(f"Error occurred during currency conversion: {e}")
+        converted_cost = c.convert("USD", currency_code, total_cost)
+        st.subheader(f"Total Electricity Cost in {country}: {converted_cost:.2f} {currency_code}")
+    except:
+        st.warning(f"Currency conversion rate not available for {country}")
