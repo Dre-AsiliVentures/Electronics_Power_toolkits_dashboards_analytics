@@ -1,3 +1,4 @@
+forex_python
 openpyxl
 pandas
 pycountry
