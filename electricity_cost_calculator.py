@@ -1,4 +1,6 @@
 import streamlit as st
+import pandas as pd
+import yfinance as yf
 
 # Define the appliances and their power ratings
 appliances = {
@@ -17,8 +19,21 @@ appliances = {
     'Chapati Maker': 1000
 }
 
+# Define currency conversion rates
+conversion_rates = {
+    'USD': 1.0,
+    'EUR': 0.82,
+    'GBP': 0.71,
+    'CAD': 1.21,
+    'AUD': 1.28,
+}
+
 # Create Streamlit application
 st.title("Electricity Cost Calculator")
+
+# Multiselect for selecting the user's country of residence
+countries = sorted(list(conversion_rates.keys()))
+selected_countries = st.multiselect("Select your country of residence:", countries)
 
 # Checkbox for selecting appliances
 selected_appliances = st.multiselect("Select the appliances you own:", list(appliances.keys()))
@@ -45,3 +60,16 @@ for appliance in selected_appliances:
 
 # Display the total electricity cost
 st.subheader(f"Total Electricity Cost: ${total_cost:.2f}")
+
+# Currency conversion
+selected_currency = st.selectbox("Select your preferred currency:", list(conversion_rates.keys()))
+converted_cost = total_cost * conversion_rates[selected_currency]
+
+st.subheader(f"Total Electricity Cost in {selected_currency}: {converted_cost:.2f}")
+
+# Retrieve exchange rates from Yahoo Finance
+exchange_rates = yf.download('USD' + selected_currency + '=X')['Close']
+exchange_rate = exchange_rates[-1]  # Get the latest exchange rate
+
+# Display the exchange rate
+st.write(f"Exchange rate (USD to {selected_currency}): {exchange_rate:.4f}")
