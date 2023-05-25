@@ -22,7 +22,7 @@ for appliance in selected_appliances:
     appliance_data = df.iloc[:next_appliance_index]
 
     # Checkbox for selecting brand
-    brands = appliance_data['Brands'].unique().dropna()
+    brands = appliance_data['Brands'].unique()
     selected_brands = st.multiselect(f"Select the brand for {appliance}:", brands)
 
     # Iterate over selected brands
