@@ -42,8 +42,12 @@ for appliance in selected_appliances:
         # Dropdown menu for selecting model name
         selected_model_name = st.selectbox(f"Select the model name for {appliance}:", selected_model_names, key=f"{appliance}_model")
 
-        # Get the power rating for the selected model name
-        power_rating = selected_tv_data[selected_tv_data['Model Name'] == selected_model_name]['Power Rating (Watts)'].values[0]
+        # Check if selected model name exists in the filtered data
+        if selected_model_name in selected_tv_data['Model Name'].values:
+            # Get the power rating for the selected model name
+            power_rating = selected_tv_data[selected_tv_data['Model Name'] == selected_model_name]['Power Rating (Watts)'].values[0]
+        else:
+            power_rating = 0
 
     else:
         # Checkbox for selecting brand
@@ -57,8 +61,12 @@ for appliance in selected_appliances:
         model_names = selected_appliance_data['Model Name'].unique()
         selected_model_name = st.selectbox(f"Select the model name for {appliance}:", model_names, key=f"{appliance}_model")
 
-        # Get the power rating for the selected model name
-        power_rating = selected_appliance_data[selected_appliance_data['Model Name'] == selected_model_name]['Power Rating (Watts)'].values[0]
+        # Check if selected model name exists in the filtered data
+        if selected_model_name in selected_appliance_data['Model Name'].values:
+            # Get the power rating for the selected model name
+            power_rating = selected_appliance_data[selected_appliance_data['Model Name'] == selected_model_name]['Power Rating (Watts)'].values[0]
+        else:
+            power_rating = 0
 
     # Calculate electricity cost
     hours_per_day = st.slider(f"Select the number of hours {appliance} is turned on:", 0, 24, 1)
