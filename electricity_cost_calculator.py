@@ -24,23 +24,34 @@ for appliance in selected_appliances:
     # Check if the selected appliance is "Television"
     if appliance == "Television":
         # Get the unique brands and model names for Television
-        tv_brands = df[df['Appliance'] == "Television"]['Brands'].unique()
-        tv_model_names = df[df['Appliance'] == "Television"]['Model Name'].unique()
+        brands = df[df['Appliance'] == "Television"]['Brands'].unique()
+        selected_brands = df[df['Appliance'] == "Television"]['Model Name'].unique()
 
         # Checkbox for selecting brand
-        selected_brands = st.multiselect(f"Select the brand for {appliance}:", tv_brands)
-
+        selected_brands = st.multiselect(f"Select the brand for {appliance}:", brands)
+    else:
+        #brands = appliance_data['Brands'].unique().dropna()
+        brands = appliance_data['Brands'].unique()
+        selected_brands = st.multiselect(f"Select the brand for {appliance}:", brands)
         # Iterate over selected brands
-        for brand in selected_brands:
-            # Get corresponding data for the selected brand
-            brand_data = appliance_data[(appliance_data['Appliance'] == appliance) & (appliance_data['Brands'] == brand)]
+    for brand in selected_brands:
+        # Get corresponding data for the selected brand
+        brand_data = appliance_data[(appliance_data['Appliance'] == appliance) & (appliance_data['Brands'] == brand)]
+        # Dropdown menu for selecting model name
+        model_names = brand_data['Model Name'].unique()
+        selected_model_name = st.selectbox(f"Select the model name for {brand} {appliance}:", model_names)
+        # Calculate electricity cost
+        power_rating = brand_data[brand_data['Model Name'] == selected_model_name]['Power Rating (Watts)'].values[0]
+        hours_per_day = st.slider(f"Select the number of hours {brand} {appliance} is turned on:", 0, 24, 1)
+        rate_per_kwhr = st.number_input("Enter the rate of electricity in dollars/kWhr:", min_value=0.0, step=0.01, value=0.12)
 
-            # Dropdown menu for selecting model name
-            model_names = brand_data['Model Name'].unique()
-            selected_model_name = st.selectbox(f"Select the model name for {brand} {appliance}:", model_names)
+        # Calculate electricity cost for the selected appliance
+        electricity_cost = (power_rating / 1000) * hours_per_day * rate_per_kwhr
+        total_cost += electricity_cost
 
-            # Calculate electricity cost
-            power_rating = brand_data[brand_data['Model Name'] == selected_model_name]['Power Rating (Watts)'].values[0]
-            hours_per_day = st.slider(f"Select the number of hours {brand} {appliance} is turned on:", 0, 24, 1)
-            rate_per_kwhr = st.number_input("Enter the rate of electricity in dollars/kWhr:", min_value=0.0, step=0.01, value=0.12)
+        # Display the calculated electricity cost
+        st.write(f"The electricity cost for {brand} {appliance} ({selected_model_name}) is: ${electricity_cost:.2f}")
+
+# Display the total electricity cost
+st.subheader(f"Total Electricity Cost: ${total_cost:.2f}")
 
