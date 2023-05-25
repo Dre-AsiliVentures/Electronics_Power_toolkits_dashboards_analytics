@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
-import yfinance as yf
+import pycountry
+from forex_python.converter import CurrencyRates
 
 # Define the appliances and their power ratings
 appliances = {
@@ -19,21 +20,24 @@ appliances = {
     'Chapati Maker': 1000
 }
 
-# Define currency conversion rates
-conversion_rates = {
-    'USD': 1.0,
-    'EUR': 0.82,
-    'GBP': 0.71,
-    'CAD': 1.21,
-    'AUD': 1.28,
+# Define common goods and their prices
+common_goods = {
+    'Pizza': 10,
+    'Hamburger': 5,
+    'Lunch for a Hungry Child': 2
 }
 
 # Create Streamlit application
-st.title("Electricity Cost Calculator")
+st.title("Electricity Cost Calculator and Price Comparison")
+
+# Fetch country codes and names using pycountry
+countries = [(country.alpha_2, country.name) for country in pycountry.countries]
+
+# Sort countries by name
+countries = sorted(countries, key=lambda x: x[1])
 
 # Multiselect for selecting the user's country of residence
-countries = sorted(list(conversion_rates.keys()))
-#selected_countries = st.multiselect("Select your country of residence:", countries)
+selected_countries = st.multiselect("Select your country of residence:", [name for _, name in countries])
 
 # Checkbox for selecting appliances
 selected_appliances = st.multiselect("Select the appliances you own:", list(appliances.keys()))
@@ -58,16 +62,29 @@ for appliance in selected_appliances:
     # Display the calculated electricity cost
     st.write(f"The electricity cost for {appliance} is: ${electricity_cost:.2f}")
 
+# Display the total electricity cost
+st.subheader(f"Total Electricity Cost: ${total_cost:.2f}")
 
-# Currency conversion
-selected_currency = st.selectbox("Select your preferred currency:", list(conversion_rates.keys()))
-converted_cost = total_cost * conversion_rates[selected_currency]
+# Currency conversion using forex-python library
+c = CurrencyRates()
 
-st.subheader(f"Total Electricity Cost in {selected_currency}: {converted_cost:.2f}")
+# Perform currency conversion for selected countries
+for country in selected_countries:
+    try:
+        currency_code = pycountry.countries.get(name=country).alpha_3
+        converted_cost = c.convert("USD", currency_code, total_cost)
+        st.subheader(f"Total Electricity Cost in {country}: {converted_cost:.2f} {currency_code}")
+    except:
+        st.warning(f"Currency conversion rate not available for {country}")
 
-# Retrieve exchange rate from Yahoo Finance
-exchange_ticker = yf.Ticker('USD' + selected_currency + '=X')
-exchange_rate = exchange_ticker.history(period='1d').tail(1)['Close'].values[0]
+# Price comparison of common goods
+st.subheader("Price Comparison of Common Goods:")
+for item, price in common_goods.items():
+    converted_price = c.convert("USD", currency_code, price)
+    st.write(f"The price of {item} is: {converted_price:.2f} {currency_code}")
 
-# Display the exchange rate
-st.write(f"Exchange rate (USD to {selected_currency}): {exchange_rate:.4f}")
+# Comparison of electricity cost and lunch for a hungry child
+if "AF" in [code for code, _ in selected_countries]:
+    hungry_child_lunch_cost = common_goods['Lunch for a Hungry Child']
+    electricity_cost_comparison = total_cost / hungry_child_lunch_cost
+    st.write(f"The electricity cost can support lunch for {electricity_cost_comparison:.0f} hungry child(ren) in Africa.")
