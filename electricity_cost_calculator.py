@@ -67,9 +67,9 @@ converted_cost = total_cost * conversion_rates[selected_currency]
 
 st.subheader(f"Total Electricity Cost in {selected_currency}: {converted_cost:.2f}")
 
-# Retrieve exchange rates from Yahoo Finance
-exchange_rates = yf.download('USD' + selected_currency + '=X')['Close']
-exchange_rate = exchange_rates[-1]  # Get the latest exchange rate
+# Retrieve exchange rate from Yahoo Finance
+exchange_ticker = yf.Ticker('USD' + selected_currency + '=X')
+exchange_rate = exchange_ticker.history(period='1d').tail(1)['Close'].values[0]
 
 # Display the exchange rate
 st.write(f"Exchange rate (USD to {selected_currency}): {exchange_rate:.4f}")
