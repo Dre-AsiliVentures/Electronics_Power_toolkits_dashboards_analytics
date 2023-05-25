@@ -3,7 +3,6 @@ import streamlit as st
 
 # Read the Excel file
 df = pd.read_excel('https://asiliventures.com/wp-content/uploads/2023/05/ElectricityPriceModel.xlsx')
-#df = pd.read_excel('https://assets.zyrosite.com/mk3L02gpp7Hw45Xg/electricitypricemodel-mp8XzMQ2gPiGVPXP.xlsx')
 
 # Create Streamlit application
 st.title("Electricity Cost Calculator")
@@ -16,19 +15,20 @@ total_cost = 0
 
 # Iterate over selected appliances
 for appliance in selected_appliances:
-    # Get corresponding data for the selected appliance
-    appliance_data = df[df['Appliance'] == appliance]
+    # Get the row index for the next appliance category
+    next_appliance_index = df[df['Appliance'] == appliance].index.max() + 1
+
+    # Get the corresponding data for the selected appliance and previous appliances
+    appliance_data = df.iloc[:next_appliance_index]
 
     # Checkbox for selecting brand
-    #brands = appliance_data['Brands'].unique()
-    # Dropdown menu for selecting brand
-    brands = df[df['Appliance'] == appliances]['Brands'].unique()
+    brands = appliance_data['Brands'].unique().dropna()
     selected_brands = st.multiselect(f"Select the brand for {appliance}:", brands)
 
     # Iterate over selected brands
     for brand in selected_brands:
         # Get corresponding data for the selected brand
-        brand_data = appliance_data[appliance_data['Brand'] == brand]
+        brand_data = appliance_data[appliance_data['Brands'] == brand]
 
         # Dropdown menu for selecting model name
         model_names = brand_data['Model Name'].unique()
