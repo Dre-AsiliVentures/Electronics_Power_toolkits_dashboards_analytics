@@ -79,12 +79,16 @@ if selected_countries:
         try:
             response = requests.get(conversion_url)
             data = response.json()
-            converted_cost = total_cost * data['rates'][currency_code]
 
-            if currency_code in conversion_rates:
-                converted_cost *= conversion_rates[currency_code]
+            if currency_code in data['rates']:
+                converted_cost = total_cost * data['rates'][currency_code]
 
-            st.subheader(f"Total Electricity Cost in {country}: {converted_cost:.2f}")
+                if currency_code in conversion_rates:
+                    converted_cost *= conversion_rates[currency_code]
+
+                st.subheader(f"Total Electricity Cost in {country}: {converted_cost:.2f}")
+            else:
+                st.warning(f"Currency conversion rate not available for {country}")
 
         except requests.exceptions.RequestException as e:
             st.error(f"Error occurred during currency conversion: {e}")
