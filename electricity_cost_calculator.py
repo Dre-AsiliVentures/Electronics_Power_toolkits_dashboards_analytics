@@ -31,10 +31,10 @@ for appliance in selected_appliances:
     power_rating = appliances[appliance]
 
     # Slider for selecting the number of hours the appliance is turned on
-    hours_per_day = st.slider(f"Select the number of hours {appliance} is turned on:", 0, 24, 1)
+    hours_per_day = st.slider(f"Select the number of hours {appliance} is turned on:", 0, 24, 1, key=appliance)
 
     # Input for the rate of electricity in dollars/kWhr
-    rate_per_kwhr = st.number_input("Enter the rate of electricity in dollars/kWhr:", min_value=0.0, step=0.01, value=0.12)
+    rate_per_kwhr = st.number_input(f"Enter the rate of electricity in dollars/kWhr for {appliance}:", min_value=0.0, step=0.01, value=0.12, key=appliance+"_rate")
 
     # Calculate electricity cost for the selected appliance
     electricity_cost = (power_rating / 1000) * hours_per_day * rate_per_kwhr
