@@ -23,9 +23,16 @@ for appliance in selected_appliances:
 
     # Check if the selected appliance is "Television"
     if appliance == "Television":
+        tv_data = appliance_data[appliance_data['Appliance'] == appliance]
+
+        # Get all the brands and model names for Television
+        tv_brands = tv_data['Brands'].unique()
+        tv_models = tv_data['Model Name'].unique()
+        brands=tv_brands
         # Get the unique brands and model names for Television
-        brands = df[df['Appliance'] == "Television"]['Brands'].dropna().unique()
-        selected_brands = df[df['Appliance'] == "Television"]['Model Name'].unique()
+
+        #brands = df[df['Appliance'] == "Television"]['Brands'].unique()
+        #selected_brands = df[df['Appliance'] == "Television"]['Model Name'].unique()
 
         # Checkbox for selecting brand
         selected_brands = st.multiselect(f"Select the brand for {appliance}:", brands)
