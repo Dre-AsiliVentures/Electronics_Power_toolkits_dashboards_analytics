@@ -34,25 +34,29 @@ for appliance in selected_appliances:
         model_names = brand_data['Model Name'].unique()
         selected_model_name = st.selectbox(f"Select the model name for {brand} {appliance}:", model_names)
 
-        # Filter data for the selected model name
-        model_data = brand_data[brand_data['Model Name'] == selected_model_name]
+        try:
+            # Filter data for the selected model name
+            model_data = brand_data[brand_data['Model Name'] == selected_model_name]
 
-        if not model_data.empty:
-            # Get the power rating for the selected model name
-            power_rating = model_data['Power Rating (Watts)'].values[0]
-        else:
-            power_rating = 0
+            if not model_data.empty:
+                # Get the power rating for the selected model name
+                power_rating = model_data['Power Rating (Watts)'].values[0]
+            else:
+                raise IndexError("Selected model name not found.")
 
-        # Calculate electricity cost
-        hours_per_day = st.slider(f"Select the number of hours {brand} {appliance} is turned on:", 0, 24, 1)
-        rate_per_kwhr = st.number_input("Enter the rate of electricity in dollars/kWhr:", min_value=0.0, step=0.01, value=0.12)
+            # Calculate electricity cost
+            hours_per_day = st.slider(f"Select the number of hours {brand} {appliance} is turned on:", 0, 24, 1)
+            rate_per_kwhr = st.number_input("Enter the rate of electricity in dollars/kWhr:", min_value=0.0, step=0.01, value=0.12)
 
-        # Calculate electricity cost for the selected appliance
-        electricity_cost = (power_rating / 1000) * hours_per_day * rate_per_kwhr
-        total_cost += electricity_cost
+            # Calculate electricity cost for the selected appliance
+            electricity_cost = (power_rating / 1000) * hours_per_day * rate_per_kwhr
+            total_cost += electricity_cost
 
-        # Display the calculated electricity cost
-        st.write(f"The electricity cost for {brand} {appliance} ({selected_model_name}) is: ${electricity_cost:.2f}")
+            # Display the calculated electricity cost
+            st.write(f"The electricity cost for {brand} {appliance} ({selected_model_name}) is: ${electricity_cost:.2f}")
+
+        except IndexError:
+            st.write(f"No data found for selected model name: {selected_model_name}. Please try again.")
 
 # Display the total electricity cost
 st.subheader(f"Total Electricity Cost: ${total_cost:.2f}")
