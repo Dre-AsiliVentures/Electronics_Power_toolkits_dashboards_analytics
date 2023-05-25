@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
-import pycountry
-from forex_python.converter import CurrencyRates
+import yfinance as yf
 
 # Define the appliances and their power ratings
 appliances = {
@@ -20,17 +19,21 @@ appliances = {
     'Chapati Maker': 1000
 }
 
+# Define currency conversion rates
+conversion_rates = {
+    'USD': 1.0,
+    'EUR': 0.82,
+    'GBP': 0.71,
+    'CAD': 1.21,
+    'AUD': 1.28,
+}
+
 # Create Streamlit application
 st.title("Electricity Cost Calculator")
 
-# Fetch country codes and names using pycountry
-countries = [(country.alpha_2, country.name) for country in pycountry.countries]
-
-# Sort countries by name
-countries = sorted(countries, key=lambda x: x[1])
-
 # Multiselect for selecting the user's country of residence
-selected_countries = st.multiselect("Select your country of residence:", [name for _, name in countries])
+countries = sorted(list(conversion_rates.keys()))
+selected_countries = st.multiselect("Select your country of residence:", countries)
 
 # Checkbox for selecting appliances
 selected_appliances = st.multiselect("Select the appliances you own:", list(appliances.keys()))
@@ -58,25 +61,15 @@ for appliance in selected_appliances:
 # Display the total electricity cost
 st.subheader(f"Total Electricity Cost: ${total_cost:.2f}")
 
-# Conversion rates dictionary for currency conversion
-conversion_rates = {
-    'USD': 1.0,
-    'EUR': 0.82,
-    'GBP': 0.71,
-    'CAD': 1.21,
-    'AUD': 1.28,
-    # Add more currencies and their rates here
-}
+# Currency conversion
+selected_currency = st.selectbox("Select your preferred currency:", list(conversion_rates.keys()))
+converted_cost = total_cost * conversion_rates[selected_currency]
 
-# Currency conversion using forex-python
-if selected_countries:
-    c = CurrencyRates()
+st.subheader(f"Total Electricity Cost in {selected_currency}: {converted_cost:.2f}")
 
-    for country in selected_countries:
-        currency_code = pycountry.countries.get(name=country).alpha_3
-        converted_cost = c.convert("USD", currency_code, total_cost)
+# Retrieve exchange rate from Yahoo Finance
+exchange_ticker = yf.Ticker('USD' + selected_currency + '=X')
+exchange_rate = exchange_ticker.history(period='1d').tail(1)['Close'].values[0]
 
-        if currency_code in conversion_rates:
-            converted_cost *= conversion_rates[currency_code]
-
-        st.subheader(f"Total Electricity Cost in {country}: {converted_cost:.2f}")
+# Display the exchange rate
+st.write(f"Exchange rate (USD to {selected_currency}): {exchange_rate:.4f}")
