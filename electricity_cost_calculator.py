@@ -20,7 +20,7 @@ for appliance in selected_appliances:
     appliance_data = df[df['Appliance'] == appliance]
 
     # Checkbox for selecting brand
-    brands = appliance_data['Brand'].unique()
+    brands = appliance_data['Brands'].unique()
     selected_brands = st.multiselect(f"Select the brand for {appliance}:", brands)
 
     # Iterate over selected brands
