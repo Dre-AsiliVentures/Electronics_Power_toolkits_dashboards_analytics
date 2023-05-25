@@ -58,14 +58,25 @@ for appliance in selected_appliances:
 # Display the total electricity cost
 st.subheader(f"Total Electricity Cost: ${total_cost:.2f}")
 
-# Currency conversion using forex-python library
-c = CurrencyRates()
+# Conversion rates dictionary for currency conversion
+conversion_rates = {
+    'USD': 1.0,
+    'EUR': 0.82,
+    'GBP': 0.71,
+    'CAD': 1.21,
+    'AUD': 1.28,
+    # Add more currencies and their rates here
+}
 
-# Perform currency conversion for selected countries
-for country in selected_countries:
-    try:
+# Currency conversion using forex-python
+if selected_countries:
+    c = CurrencyRates()
+
+    for country in selected_countries:
         currency_code = pycountry.countries.get(name=country).alpha_3
         converted_cost = c.convert("USD", currency_code, total_cost)
-        st.subheader(f"Total Electricity Cost in {country}: {converted_cost:.2f} {currency_code}")
-    except:
-        st.warning(f"Currency conversion rate not available for {country}")
+
+        if currency_code in conversion_rates:
+            converted_cost *= conversion_rates[currency_code]
+
+        st.subheader(f"Total Electricity Cost in {country}: {converted_cost:.2f}")
