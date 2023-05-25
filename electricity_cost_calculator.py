@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import pycountry
 from forex_python.converter import CurrencyRates
 
 # Define the appliances and their power ratings
@@ -22,8 +23,14 @@ appliances = {
 # Create Streamlit application
 st.title("Electricity Cost Calculator")
 
+# Fetch country codes and names using pycountry
+countries = [(country.alpha_2, country.name) for country in pycountry.countries]
+
+# Sort countries by name
+countries = sorted(countries, key=lambda x: x[1])
+
 # Multiselect for selecting the user's country of residence
-selected_countries = st.multiselect("Select your country of residence:", pd.read_csv('https://countrycode.org/api/csv/all')['ISO2'].to_list())
+selected_countries = st.multiselect("Select your country of residence:", [name for _, name in countries])
 
 # Checkbox for selecting appliances
 selected_appliances = st.multiselect("Select the appliances you own:", list(appliances.keys()))
@@ -55,6 +62,7 @@ st.subheader(f"Total Electricity Cost: ${total_cost:.2f}")
 if selected_countries:
     c = CurrencyRates()
     
-    for currency in selected_countries:
-        converted_cost = c.convert("USD", currency, total_cost)
-        st.subheader(f"Total Electricity Cost in {currency}: {converted_cost:.2f}")
+    for country in selected_countries:
+        currency_code = pycountry.countries.get(name=country).alpha_3
+        converted_cost = c.convert("USD", currency_code, total_cost)
+        st.subheader(f"Total Electricity Cost in {country}: {converted_cost:.2f}")
