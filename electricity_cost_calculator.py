@@ -24,7 +24,7 @@ for appliance in selected_appliances:
     # Check if the selected appliance is "Television"
     if appliance == "Television":
         # Get the unique brands and model names for Television
-        brands = df[df['Appliance'] == "Television"]['Brands'].unique()
+        brands = df[df['Appliance'] == "Television"]['Brands'].dropna().unique()
         selected_brands = df[df['Appliance'] == "Television"]['Model Name'].unique()
 
         # Checkbox for selecting brand
