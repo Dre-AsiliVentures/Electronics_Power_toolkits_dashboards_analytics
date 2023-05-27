@@ -51,7 +51,6 @@ filtered_df = df[
     (df['Connectivity'].apply(lambda x: all(option in x for option in connectivity_selected))) &
     (df['Design & Build Quality'].apply(lambda x: all(option in x for option in design_selected))) &
     (df['Security & Privacy'].apply(lambda x: all(option in x for option in security_selected))) &
-    (df['IP Rating'] >= ip_rating) &
     (df['Additional Features'].apply(lambda x: all(option in x for option in additional_selected))) &
     (df['USB Type'] == usb_type) &
     (df['Price'] <= price_range)
