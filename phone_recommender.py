@@ -7,6 +7,18 @@ def main():
     operating_system = st.selectbox('Select Operating System', list(df['Operating System'].unique()))
     storage_space = st.slider('Select Storage Space (GB)', min_value=0, max_value=int(df['Storage'].str.rstrip('GB').max()), step=1)
 
+    st.subheader('Connectivity')
+    with st.beta_expander('Connectivity Options'):
+        with st.beta_container():
+            col1, col2, col3, col4 = st.beta_columns(4)
+        with col1:
+            is_5g = st.checkbox('5G')
+        with col2:
+            is_4g = st.checkbox('4G')
+        with col3:
+            is_wifi = st.checkbox('Wi-Fi')
+        with col4:
+            is_nfc = st.checkbox('NFC')
     # Filter the data based on the selected operating system
     #filtered_data = df[df['Operating System'] == operating_system]
     st.write(operating_system)
