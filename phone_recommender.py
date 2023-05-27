@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 # Load the phone specifications from the Excel file
-url = 'https://www.phonerecommender.com/phonespecifications.xlsx'
+url = 'https://asiliventures.com/wp-content/uploads/2023/05/Phone-Specifications.xlsx'
 df = pd.read_excel(url)
 
 # Convert 'Storage' column to numeric type
