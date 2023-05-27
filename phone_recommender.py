@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 # Load the phone specifications from the Excel file
-url = 'https://assets.zyrosite.com/mk3L02gpp7Hw45Xg/phone-specifications-AVLDWbKx3zIjLev9.xlsx'
+url = 'https://asiliventures.com/wp-content/uploads/2023/05/Phone-Specifications.xlsx'
 df = pd.read_excel(url)
 
 # Create dropdown for operating system
