@@ -9,7 +9,8 @@ def main():
 
     # Filter the data based on the selected operating system
     #filtered_data = df[df['Operating System'] == operating_system]
-
+    st.write(operating_system)
+    st.write(storage_space)
     # Display the filtered data
     #st.write("Filtered Data:")
     #st.dataframe(filtered_data)
