@@ -1,8 +1,9 @@
 import streamlit as st
-
+import pandas as pd
+df = pd.read_excel('https://asiliventures.com/wp-content/uploads/2023/05/Phone-Specifications.xlsx')
 def main():
     # Create a checkbox
-    checkbox_state = st.checkbox("Select Operating System!")
+    operating_system = st.checkbox("Select Operating System!",df['Operating System'].unique())
 
     # Display a message based on the checkbox state
     if checkbox_state:
