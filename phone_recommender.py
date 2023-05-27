@@ -3,7 +3,7 @@ import pandas as pd
 import streamlit as st
 
 # Load the phone specifications data from the Excel file
-df = pd.read_excel('https://www.phonerecommender.com/phonespecifications.xlsx')
+df = pd.read_excel('https://asiliventures.com/wp-content/uploads/2023/05/Phone-Specifications.xlsx')
 
 # Extract the numeric part from the storage string and convert it to an integer
 df['Storage'] = df['Storage'].str.extract('(\d+)').astype(int)
