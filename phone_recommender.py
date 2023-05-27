@@ -7,11 +7,11 @@ def main():
     operating_system = st.selectbox('Select Operating System', list(df['Operating System'].unique()))
 
     # Filter the data based on the selected operating system
-    filtered_data = df[df['Operating System'] == operating_system]
+    #filtered_data = df[df['Operating System'] == operating_system]
 
     # Display the filtered data
-    st.write("Filtered Data:")
-    st.dataframe(filtered_data)
+    #st.write("Filtered Data:")
+    #st.dataframe(filtered_data)
     # Display a message based on the checkbox state
     if operating_system:
         st.write("Checkbox is checked!")
