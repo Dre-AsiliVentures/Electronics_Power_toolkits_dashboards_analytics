@@ -2,14 +2,17 @@ import streamlit as st
 import pandas as pd
 
 # Load the phone specifications from the Excel file
-url = 'https://asiliventures.com/wp-content/uploads/2023/05/Phone-Specifications.xlsx'
+url = 'https://www.phonerecommender.com/phonespecifications.xlsx'
 df = pd.read_excel(url)
+
+# Convert 'Storage' column to numeric type
+df['Storage'] = pd.to_numeric(df['Storage'], errors='coerce')
 
 # Create dropdown for operating system
 operating_system = st.selectbox('Select Operating System', df['Operating System'].unique())
 
 # Create slider for storage space
-storage_space = st.slider('Select Storage Space (GB)', min_value=0, max_value=df['Storage'].max(), step=1)
+storage_space = st.slider('Select Storage Space (GB)', min_value=0, max_value=int(df['Storage'].max()), step=1)
 
 # Create checkboxes for connectivity
 connectivity_options = ['5G', '4G', 'Wi-Fi', 'NFC']
@@ -34,7 +37,7 @@ additional_selected = st.multiselect('Select Additional Features', additional_fe
 usb_type = st.slider('Select USB Type (USB Type-C or Type-B)', min_value=0, max_value=1, step=1)
 
 # Create slider for price range
-price_range = st.slider('Select Price Range', min_value=0, max_value=df['Price'].max(), step=100)
+price_range = st.slider('Select Price Range', min_value=0, max_value=int(df['Price'].max()), step=100)
 
 # Filter the dataframe based on the selected criteria
 filtered_df = df[
@@ -54,5 +57,3 @@ if len(filtered_df) > 0:
     st.table(filtered_df)
 else:
     st.warning('No phones match the selected criteria.')
-
-
