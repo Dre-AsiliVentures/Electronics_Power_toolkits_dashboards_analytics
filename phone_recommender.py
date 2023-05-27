@@ -1,12 +1,16 @@
+import re
 import pandas as pd
 import streamlit as st
 
 # Load the phone specifications data from the Excel file
-df = pd.read_excel('https://asiliventures.com/wp-content/uploads/2023/05/Phone-Specifications.xlsx')
+df = pd.read_excel('https://www.phonerecommender.com/phonespecifications.xlsx')
+
+# Extract the numeric part from the storage string and convert it to an integer
+df['Storage'] = df['Storage'].str.extract('(\d+)').astype(int)
 
 # Create sidebar components for user input
 operating_system = st.selectbox('Select Operating System', df['Operating System'].unique())
-storage_space = st.slider('Select Storage Space (GB)', min_value=0, max_value=int(df['Storage'].max()), step=1)
+storage_space = st.slider('Select Storage Space (GB)', min_value=0, max_value=df['Storage'].max(), step=1)
 connectivity_5g = st.checkbox('5G')
 connectivity_4g = st.checkbox('4G')
 connectivity_wifi = st.checkbox('Wi-Fi')
@@ -21,15 +25,17 @@ design_gorilla_glass = st.checkbox('Gorilla Glass')
 security_face_id = st.checkbox('Face ID or Facial Recognition')
 security_rear_mounted = st.checkbox('Rear-Mounted')
 security_in_display = st.checkbox('In-Display')
+ip_rating = st.slider('Select IP Rating', min_value=0, max_value=8, step=1)
 stylus_pen_support = st.checkbox('Stylus Pen Support')
-magsafe_compatibility = st.checkbox('Magsafe Compatibility')
-display_amoled_oled = st.slider('Select Display (AMOLED & OLED)', min_value=0, max_value=df['Display (AMOLED & OLED)'].max(), step=1)
+magsafe_compatibility = st.checkbox('MagSafe Compatibility')
+display_amoled_oled = st.slider('Select Display Type (AMOLED & OLED)', min_value=0, max_value=1, step=1)
 pop_up_camera = st.checkbox('Pop-up Camera')
 vr_support = st.checkbox('VR Support')
 optical_image_stabilization = st.checkbox('Optical Image Stabilization')
+usb_type_c = st.slider('Select USB Type (Type C)', min_value=0, max_value=1, step=1)
 price_range = st.slider('Select Price Range', min_value=0, max_value=int(df['Price'].str.replace('$', '').astype(int).max()), step=100)
 
-# Filter the DataFrame based on the selected criteria
+# Filter the data based on user input
 filtered_df = df[
     (df['Operating System'] == operating_system) &
     (df['Storage'] >= storage_space) &
@@ -45,19 +51,21 @@ filtered_df = df[
     (df['Design & Build Quality (Plastic)'] == design_plastic) &
     (df['Design & Build Quality (Gorilla Glass)'] == design_gorilla_glass) &
     (df['Security & Privacy (Face ID or Facial Recognition)'] == security_face_id) &
-    (df['Security & Privacy (Rear-Mounted)'] == security_rear_mounted) &
-    (df['Security & Privacy (In-Display)'] == security_in_display) &
+    (df['Security & Privacy (Rear-Mounted Fingerprint Sensor)'] == security_rear_mounted) &
+    (df['Security & Privacy (In-Display Fingerprint Sensor)'] == security_in_display) &
+    (df['IP Rating'] >= ip_rating) &
     (df['Stylus Pen Support'] == stylus_pen_support) &
-    (df['Magsafe Compatibility'] == magsafe_compatibility) &
-    (df['Display (AMOLED & OLED)'] >= display_amoled_oled) &
+    (df['MagSafe Compatibility'] == magsafe_compatibility) &
+    (df['Display Type (AMOLED & OLED)'] == display_amoled_oled) &
     (df['Pop-up Camera'] == pop_up_camera) &
     (df['VR Support'] == vr_support) &
     (df['Optical Image Stabilization'] == optical_image_stabilization) &
-    (df['Price'].str.replace('$', '').astype(int) >= price_range)
+    (df['USB Type (Type C)'] == usb_type_c) &
+    (df['Price'].str.replace('$', '').astype(int) <= price_range)
 ]
 
 # Display the filtered results
-if len(filtered_df) > 0:
-    st.write(filtered_df)
+if filtered_df.empty:
+    st.warning('No phones match your criteria.')
 else:
-    st.write('No phones match the selected criteria.')
+    st.dataframe(filtered_df)
