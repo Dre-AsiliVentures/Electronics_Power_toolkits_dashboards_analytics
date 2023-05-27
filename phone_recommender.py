@@ -8,6 +8,8 @@ df = pd.read_excel(url)
 # Convert 'Storage' column to numeric type
 df['Storage'] = pd.to_numeric(df['Storage'], errors='coerce')
 
+# Replace NaN values in 'Storage' column with a default value (e.g., 0)
+df['Storage'].fillna(0, inplace=True)
 # Create dropdown for operating system
 operating_system = st.selectbox('Select Operating System', df['Operating System'].unique())
 
