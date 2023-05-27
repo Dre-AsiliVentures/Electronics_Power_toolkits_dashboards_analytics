@@ -5,6 +5,7 @@ def main():
     # Create a checkbox
     # Sidebar components for user input
     operating_system = st.selectbox('Select Operating System', list(df['Operating System'].unique()))
+    storage_space = st.slider('Select Storage Space (GB)', min_value=0, max_value=int(df['Storage'].str.rstrip('GB').max()), step=1)
 
     # Filter the data based on the selected operating system
     #filtered_data = df[df['Operating System'] == operating_system]
