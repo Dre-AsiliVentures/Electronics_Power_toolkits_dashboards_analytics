@@ -2,7 +2,7 @@ import streamlit as st
 
 def main():
     # Create a checkbox
-    checkbox_state = st.checkbox("Check me!")
+    checkbox_state = st.checkbox("Select Operating System!")
 
     # Display a message based on the checkbox state
     if checkbox_state:
