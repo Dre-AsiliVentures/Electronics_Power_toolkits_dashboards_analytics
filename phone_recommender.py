@@ -10,6 +10,9 @@ df['Storage'] = pd.to_numeric(df['Storage'], errors='coerce')
 
 # Replace NaN values in 'Storage' column with a default value (e.g., 0)
 df['Storage'].fillna(0, inplace=True)
+
+# Remove dollar sign and comma from 'Price' column, and convert it to numeric type
+df['Price'] = df['Price'].str.replace('$', '').str.replace(',', '').astype(float)
 # Create dropdown for operating system
 operating_system = st.selectbox('Select Operating System', df['Operating System'].unique())
 
