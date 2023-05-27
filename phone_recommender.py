@@ -6,7 +6,7 @@ def main():
     operating_system = st.checkbox("Select Operating System!",list(df['Operating System'].unique()))
 
     # Display a message based on the checkbox state
-    if checkbox_state:
+    if operating_system:
         st.write("Checkbox is checked!")
     else:
         st.write("Checkbox is unchecked!")
