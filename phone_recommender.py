@@ -1,8 +1,9 @@
 import streamlit as st
 import pandas as pd
+
 df = pd.read_excel('https://asiliventures.com/wp-content/uploads/2023/05/Phone-Specifications.xlsx')
+
 def main():
-    # Create a checkbox
     # Sidebar components for user input
     operating_system = st.selectbox('Select Operating System', list(df['Operating System'].unique()))
     storage_space = st.slider('Select Storage Space (GB)', min_value=0, max_value=int(df['Storage'].str.rstrip('GB').max()), step=1)
@@ -41,7 +42,6 @@ def main():
             with col7:
                 is_gorilla_glass = st.checkbox('Gorilla Glass')
 
-
     st.subheader('Security & Privacy')
     with st.beta_expander('Security & Privacy Options'):
         with st.beta_container():
@@ -52,18 +52,24 @@ def main():
                 is_rear_mounted = st.checkbox('Rear-Mounted')
             with col3:
                 is_in_display = st.checkbox('In-Display')
-    # Filter the data based on the selected operating system
-    #filtered_data = df[df['Operating System'] == operating_system]
-    st.write(operating_system)
-    st.write(storage_space)
+
+    # Filter the data based on the selected criteria
+    filtered_data = df[
+        (df['Operating System'] == operating_system) &
+        (df['Storage'].str.rstrip('GB').astype(int) >= storage_space) &
+        ((df['5G'] == is_5g) | (df['4G'] == is_4g) | (df['WiFi'] == is_wifi) | (df['NFC'] == is_nfc)) &
+        ((df['Glass'] == is_glass) | (df['Stainless Steel'] == is_stainless_steel) | (df['Metal'] == is_metal) |
+         (df['Aluminium'] == is_aluminium) | (df['Polycarbonate'] == is_polycarbonate) | (df['Plastic'] == is_plastic) |
+         (df['Gorilla Glass'] == is_gorilla_glass)) &
+        ((df['Face ID'] == is_face_id) | (df['Rear-Mounted'] == is_rear_mounted) | (df['In-Display'] == is_in_display))
+    ]
+
     # Display the filtered data
-    #st.write("Filtered Data:")
-    #st.dataframe(filtered_data)
-    # Display a message based on the checkbox state
-    if operating_system:
-        st.write("Checkbox is checked!")
+    if len(filtered_data) >= 7:
+        st.write("Phone Models that meet the criteria:")
+        st.dataframe(filtered_data)
     else:
-        st.write("Checkbox is unchecked!")
+        st.write("No Phone Models meet the criteria.")
 
 if __name__ == '__main__':
     main()
