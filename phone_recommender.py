@@ -6,7 +6,7 @@ df = pd.read_excel('https://asiliventures.com/wp-content/uploads/2023/05/Phone-S
 def main():
     # Sidebar components for user input
     operating_system = st.selectbox('Select Operating System', list(df['Operating System'].unique()))
-    storage_space = st.slider('Select Storage Space (GB)', min_value=0, max_value=int(df['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').max()), step=1)
+    storage_space = st.slider('Select Storage Space (GB)', min_value=0, max_value=int(df['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').astype(float).max()), step=1)
 
     st.subheader('Connectivity')
     with st.beta_expander('Connectivity Options'):
@@ -56,7 +56,7 @@ def main():
     # Filter the data based on the selected criteria
     filtered_data = df[
         (df['Operating System'] == operating_system) &
-        (df['Storage'].str.rstrip('GB').astype(int) >= storage_space) &
+        (df['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').astype(float) >= storage_space) &
         ((df['5G'] == is_5g) | (df['4G'] == is_4g) | (df['WiFi'] == is_wifi) | (df['NFC'] == is_nfc)) &
         ((df['Glass'] == is_glass) | (df['Stainless Steel'] == is_stainless_steel) | (df['Metal'] == is_metal) |
          (df['Aluminium'] == is_aluminium) | (df['Polycarbonate'] == is_polycarbonate) | (df['Plastic'] == is_plastic) |
@@ -65,7 +65,7 @@ def main():
     ]
 
     # Display the filtered data
-    if len(filtered_data) >= 7:
+    if not filtered_data.empty:
         st.write("Phone Models that meet the criteria:")
         st.dataframe(filtered_data)
     else:
