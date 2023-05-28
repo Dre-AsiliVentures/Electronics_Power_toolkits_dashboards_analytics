@@ -23,7 +23,9 @@ def main():
     st.subheader('Design & Build Quality')
     with st.beta_expander('Design & Build Quality Options'):
         with st.beta_container():
-            col1, col2, col3, col4, col5, col6, col7 = st.beta_columns(7)
+            col1, col2, col3, col4 = st.beta_columns(4)
+            col5, col6, col7 = st.beta_columns(3)
+
             with col1:
                 is_glass = st.checkbox('Glass')
             with col2:
@@ -38,6 +40,7 @@ def main():
                 is_plastic = st.checkbox('Plastic')
             with col7:
                 is_gorilla_glass = st.checkbox('Gorilla Glass')
+
 
     st.subheader('Security & Privacy')
     with st.beta_expander('Security & Privacy Options'):
