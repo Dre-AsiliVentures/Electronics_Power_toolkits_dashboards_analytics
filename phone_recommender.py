@@ -24,23 +24,18 @@ def main():
     st.subheader('Design & Build Quality')
     with st.beta_expander('Design & Build Quality Options'):
         with st.beta_container():
-            col1, col2, col3, col4 = st.beta_columns(4)
-            col5, col6, col7 = st.beta_columns(3)
+            col1, col2, col3, col4, col5 = st.beta_columns(5)
 
             with col1:
                 is_glass = st.checkbox('Glass')
             with col2:
                 is_stainless_steel = st.checkbox('Stainless Steel')
             with col3:
-                is_metal = st.checkbox('Metal')
-            with col4:
                 is_aluminium = st.checkbox('Aluminium')
+            with col4:
+                is_ceramic = st.checkbox('Ceramic')
             with col5:
                 is_polycarbonate = st.checkbox('Polycarbonate')
-            with col6:
-                is_plastic = st.checkbox('Plastic')
-            with col7:
-                is_gorilla_glass = st.checkbox('Gorilla Glass')
 
     st.subheader('Security & Privacy')
     with st.beta_expander('Security & Privacy Options'):
@@ -61,9 +56,11 @@ def main():
         (df['Connectivity'].str.contains('4G') == is_4g) &
         (df['Connectivity'].str.contains('Wi-Fi') == is_wifi) &
         (df['Connectivity'].str.contains('NFC') == is_nfc) &
-        ((df['Glass'] == is_glass) | (df['Stainless Steel'] == is_stainless_steel) | (df['Metal'] == is_metal) |
-         (df['Aluminium'] == is_aluminium) | (df['Polycarbonate'] == is_polycarbonate) | (df['Plastic'] == is_plastic) |
-         (df['Gorilla Glass'] == is_gorilla_glass)) &
+        ((df['Design and Build Quality'].str.contains('Glass')) == is_glass) &
+        ((df['Design and Build Quality'].str.contains('Stainless Steel')) == is_stainless_steel) &
+        ((df['Design and Build Quality'].str.contains('Aluminium')) == is_aluminium) &
+        ((df['Design and Build Quality'].str.contains('Ceramic')) == is_ceramic) &
+        ((df['Design and Build Quality'].str.contains('Polycarbonate')) == is_polycarbonate) &
         ((df['Face ID'] == is_face_id) | (df['Rear-Mounted'] == is_rear_mounted) | (df['In-Display'] == is_in_display))
     ]
 
