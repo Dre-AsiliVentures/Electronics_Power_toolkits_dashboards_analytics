@@ -23,7 +23,7 @@ def main():
     st.subheader('Design & Build Quality')
     with st.beta_expander('Design & Build Quality Options'):
         with st.beta_container():
-            col1, col2, col3, col4, col5, col6, col7 = st.beta_columns(4)
+            col1, col2, col3, col4, col5, col6, col7 = st.beta_columns(7)
             with col1:
                 is_glass = st.checkbox('Glass')
             with col2:
