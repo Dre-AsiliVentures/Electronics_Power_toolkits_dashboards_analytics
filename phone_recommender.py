@@ -40,13 +40,15 @@ def main():
     st.subheader('Security & Privacy')
     with st.beta_expander('Security & Privacy Options'):
         with st.beta_container():
-            col1, col2, col3 = st.beta_columns(3)
+            col1, col2, col3, col4 = st.beta_columns(4)
             with col1:
                 is_face_id = st.checkbox('Face ID or Facial Recognition')
             with col2:
-                is_rear_mounted = st.checkbox('Rear-Mounted')
+                is_in_display = st.checkbox('In-Display Fingerprint')
             with col3:
-                is_in_display = st.checkbox('In-Display')
+                is_side_mounted = st.checkbox('Side-Mounted Fingerprint')
+            with col4:
+                is_rear_mounted = st.checkbox('Rear-Mounted Fingerprint')
 
     # Filter the data based on the selected criteria
     filtered_data = df[
@@ -61,7 +63,10 @@ def main():
         ((df['Design and Build Quality'].str.contains('Aluminium')) == is_aluminium) &
         ((df['Design and Build Quality'].str.contains('Ceramic')) == is_ceramic) &
         ((df['Design and Build Quality'].str.contains('Polycarbonate')) == is_polycarbonate) &
-        ((df['Face ID'] == is_face_id) | (df['Rear-Mounted'] == is_rear_mounted) | (df['In-Display'] == is_in_display))
+        ((df['Security & Privacy'].str.contains('Face ID')) == is_face_id) &
+        ((df['Security & Privacy'].str.contains('In-display Fingerprint')) == is_in_display) &
+        ((df['Security & Privacy'].str.contains('Side-Mounted Fingerprint')) == is_side_mounted) &
+        ((df['Security & Privacy'].str.contains('Rear-Mounted Fingerprint')) == is_rear_mounted)
     ]
 
     # Display the filtered data
