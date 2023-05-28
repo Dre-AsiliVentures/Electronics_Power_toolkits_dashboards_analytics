@@ -55,7 +55,7 @@ def main():
 
     # Filter the data based on the selected criteria
     filtered_data = df[
-        (df['Operating System'] == operating_system) |
+        (df['Operating System'] == operating_system) &
         ((df['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').astype(float) >= storage_space) if show_storage else True) |
         ((df['Connectivity'].str.contains('5G')) == is_5g) |
         ((df['Connectivity'].str.contains('4G')) == is_4g) |
