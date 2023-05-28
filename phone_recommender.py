@@ -57,7 +57,10 @@ def main():
     filtered_data = df[
         (df['Operating System'] == operating_system) &
         (df['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').astype(float) >= storage_space) &
-        ((df['5G'] == is_5g) | (df['4G'] == is_4g) | (df['WiFi'] == is_wifi) | (df['NFC'] == is_nfc)) &
+        (df['Connectivity'].str.contains('5G') == is_5g) &
+        (df['Connectivity'].str.contains('4G') == is_4g) &
+        (df['Connectivity'].str.contains('Wi-Fi') == is_wifi) &
+        (df['Connectivity'].str.contains('NFC') == is_nfc) &
         ((df['Glass'] == is_glass) | (df['Stainless Steel'] == is_stainless_steel) | (df['Metal'] == is_metal) |
          (df['Aluminium'] == is_aluminium) | (df['Polycarbonate'] == is_polycarbonate) | (df['Plastic'] == is_plastic) |
          (df['Gorilla Glass'] == is_gorilla_glass)) &
