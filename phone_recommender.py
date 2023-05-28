@@ -57,18 +57,18 @@ def main():
     filtered_data = df[
         (df['Operating System'] == operating_system) &
         ((df['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').astype(float) >= storage_space) if show_storage else True) &
-        ((df['Connectivity'].str.contains('5G')) == is_5g) |
-        ((df['Connectivity'].str.contains('4G')) == is_4g) |
-        ((df['Connectivity'].str.contains('Wi-Fi')) == is_wifi) |
-        ((df['Connectivity'].str.contains('NFC')) == is_nfc) |
-        ((df['Design and Build Quality'].str.contains('Glass')) == is_glass) |
-        ((df['Design and Build Quality'].str.contains('Stainless Steel')) == is_stainless_steel) |
-        ((df['Design and Build Quality'].str.contains('Aluminium')) == is_aluminium) |
-        ((df['Design and Build Quality'].str.contains('Ceramic')) == is_ceramic) |
-        ((df['Design and Build Quality'].str.contains('Polycarbonate')) == is_polycarbonate) |
-        ((df['Security & Privacy'].str.contains('Face ID')) == is_face_id) |
-        ((df['Security & Privacy'].str.contains('In-Display Fingerprint')) == is_in_display) |
-        ((df['Security & Privacy'].str.contains('Side-Mounted Fingerprint')) == is_side_mounted) |
+        ((df['Connectivity'].str.contains('5G')) == is_5g) &
+        ((df['Connectivity'].str.contains('4G')) == is_4g) &
+        ((df['Connectivity'].str.contains('Wi-Fi')) == is_wifi) &
+        ((df['Connectivity'].str.contains('NFC')) == is_nfc) &
+        ((df['Design and Build Quality'].str.contains('Glass')) == is_glass) &
+        ((df['Design and Build Quality'].str.contains('Stainless Steel')) == is_stainless_steel) &
+        ((df['Design and Build Quality'].str.contains('Aluminium')) == is_aluminium) &
+        ((df['Design and Build Quality'].str.contains('Ceramic')) == is_ceramic) &
+        ((df['Design and Build Quality'].str.contains('Polycarbonate')) == is_polycarbonate) &
+        ((df['Security & Privacy'].str.contains('Face ID')) == is_face_id) &
+        ((df['Security & Privacy'].str.contains('In-Display Fingerprint')) == is_in_display) &
+        ((df['Security & Privacy'].str.contains('Side-Mounted Fingerprint')) == is_side_mounted) &
         ((df['Security & Privacy'].str.contains('Rear-Mounted Fingerprint')) == is_rear_mounted)
     ]
 
