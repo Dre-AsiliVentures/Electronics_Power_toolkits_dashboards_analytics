@@ -5,7 +5,9 @@ df = pd.read_excel('https://asiliventures.com/wp-content/uploads/2023/05/Phone-S
 
 def main():
     # Sidebar components for user input
+    st.subheader('Operating System')
     operating_system = st.selectbox('Select Operating System', list(df['Operating System'].unique()))
+    st.subheader('Storage')
     show_storage = st.checkbox('Filter by Storage Space')
     storage_space = st.slider('Select Storage Space (GB)', min_value=0, max_value=int(df['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').astype(float).max()), step=1) if show_storage else None
 
@@ -80,6 +82,7 @@ def main():
 
     if st.button('Reset'):
         st.session_state.clear()  # Clear all session state variables
+        st.experimental_rerun()  # Rerun the app
 
 if __name__ == '__main__':
     main()
