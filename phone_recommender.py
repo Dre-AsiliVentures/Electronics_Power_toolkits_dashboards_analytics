@@ -6,7 +6,7 @@ df = pd.read_excel('https://asiliventures.com/wp-content/uploads/2023/05/Phone-S
 def main():
     # Sidebar components for user input
     operating_system = st.selectbox('Select Operating System', list(df['Operating System'].unique()))
-    storage_space = st.slider('Select Storage Space (GB)', min_value=0, max_value=int(df['Storage'].str.rstrip('GB').max()), step=1)
+    storage_space = st.slider('Select Storage Space (GB)', min_value=0, max_value=int(df['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').max()), step=1)
 
     st.subheader('Connectivity')
     with st.beta_expander('Connectivity Options'):
