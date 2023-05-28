@@ -64,17 +64,21 @@ def main():
         ((df['Design and Build Quality'].str.contains('Ceramic')) == is_ceramic) &
         ((df['Design and Build Quality'].str.contains('Polycarbonate')) == is_polycarbonate) &
         ((df['Security & Privacy'].str.contains('Face ID')) == is_face_id) &
-        ((df['Security & Privacy'].str.contains('In-display Fingerprint')) == is_in_display) &
+        ((df['Security & Privacy'].str.contains('In-Display Fingerprint')) == is_in_display) &
         ((df['Security & Privacy'].str.contains('Side-Mounted Fingerprint')) == is_side_mounted) &
         ((df['Security & Privacy'].str.contains('Rear-Mounted Fingerprint')) == is_rear_mounted)
     ]
 
     # Display the filtered data
-    if not filtered_data.empty:
-        st.write("Phone Models that meet the criteria:")
-        st.dataframe(filtered_data)
-    else:
-        st.write("No Phone Models meet the criteria.")
+    if st.button('Recommend Phone'):
+        if not filtered_data.empty:
+            st.write("Phone Models that meet the criteria:")
+            st.dataframe(filtered_data)
+        else:
+            st.write("No Phone Models meet the criteria.")
+
+    if st.button('Reset'):
+        filtered_data = pd.DataFrame()  # Reset the filtered data
 
 if __name__ == '__main__':
     main()
