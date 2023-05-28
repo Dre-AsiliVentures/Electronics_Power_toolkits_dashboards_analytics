@@ -54,24 +54,24 @@ def main():
     # Filter the data based on the selected criteria
     filtered_data = df[
         (df['Operating System'] == operating_system) &
-        (df['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').astype(float) >= storage_space) if show_storage else True &
-        (df['Connectivity'].str.contains('5G') == is_5g) &
-        (df['Connectivity'].str.contains('4G') == is_4g) &
-        (df['Connectivity'].str.contains('Wi-Fi') == is_wifi) &
-        (df['Connectivity'].str.contains('NFC') == is_nfc) &
-        ((df['Design and Build Quality'].str.contains('Glass')) == is_glass) &
-        ((df['Design and Build Quality'].str.contains('Stainless Steel')) == is_stainless_steel) &
-        ((df['Design and Build Quality'].str.contains('Aluminium')) == is_aluminium) &
-        ((df['Design and Build Quality'].str.contains('Ceramic')) == is_ceramic) &
-        ((df['Design and Build Quality'].str.contains('Polycarbonate')) == is_polycarbonate) &
-        ((df['Security & Privacy'].str.contains('Face ID')) == is_face_id) &
-        ((df['Security & Privacy'].str.contains('In-Display Fingerprint')) == is_in_display) &
-        ((df['Security & Privacy'].str.contains('Side-Mounted Fingerprint')) == is_side_mounted) &
-        ((df['Security & Privacy'].str.contains('Rear-Mounted Fingerprint')) == is_rear_mounted)
+        (df['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').astype(float) >= storage_space if show_storage else True) &
+        ((df['Connectivity'].str.contains('5G') == is_5g) | (df['Connectivity'].str.contains('5G') != is_5g).isnull()) &
+        ((df['Connectivity'].str.contains('4G') == is_4g) | (df['Connectivity'].str.contains('4G') != is_4g).isnull()) &
+        ((df['Connectivity'].str.contains('Wi-Fi') == is_wifi) | (df['Connectivity'].str.contains('Wi-Fi') != is_wifi).isnull()) &
+        ((df['Connectivity'].str.contains('NFC') == is_nfc) | (df['Connectivity'].str.contains('NFC') != is_nfc).isnull()) &
+        ((df['Design and Build Quality'].str.contains('Glass') == is_glass) | (df['Design and Build Quality'].str.contains('Glass') != is_glass).isnull()) &
+        ((df['Design and Build Quality'].str.contains('Stainless Steel') == is_stainless_steel) | (df['Design and Build Quality'].str.contains('Stainless Steel') != is_stainless_steel).isnull()) &
+        ((df['Design and Build Quality'].str.contains('Aluminium') == is_aluminium) | (df['Design and Build Quality'].str.contains('Aluminium') != is_aluminium).isnull()) &
+        ((df['Design and Build Quality'].str.contains('Ceramic') == is_ceramic) | (df['Design and Build Quality'].str.contains('Ceramic') != is_ceramic).isnull()) &
+        ((df['Design and Build Quality'].str.contains('Polycarbonate') == is_polycarbonate) | (df['Design and Build Quality'].str.contains('Polycarbonate') != is_polycarbonate).isnull()) &
+        ((df['Security & Privacy'].str.contains('Face ID') == is_face_id) | (df['Security & Privacy'].str.contains('Face ID') != is_face_id).isnull()) &
+        ((df['Security & Privacy'].str.contains('In-Display Fingerprint') == is_in_display) | (df['Security & Privacy'].str.contains('In-Display Fingerprint') != is_in_display).isnull()) &
+        ((df['Security & Privacy'].str.contains('Side-Mounted Fingerprint') == is_side_mounted) | (df['Security & Privacy'].str.contains('Side-Mounted Fingerprint') != is_side_mounted).isnull()) &
+        ((df['Security & Privacy'].str.contains('Rear-Mounted Fingerprint') == is_rear_mounted) | (df['Security & Privacy'].str.contains('Rear-Mounted Fingerprint') != is_rear_mounted).isnull())
     ]
 
     # Display the filtered data
-    if st.button('Recommend Phone'):
+    if st.button('Filter'):
         if not filtered_data.empty:
             st.write("Phone Models that meet the criteria:")
             st.dataframe(filtered_data)
@@ -79,7 +79,6 @@ def main():
             st.write("No Phone Models meet the criteria.")
 
     if st.button('Reset'):
-        filtered_data=pd.DataFrame()
         st.session_state.clear()  # Clear all session state variables
 
 if __name__ == '__main__':
