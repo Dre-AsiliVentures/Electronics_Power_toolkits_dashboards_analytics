@@ -6,7 +6,8 @@ df = pd.read_excel('https://asiliventures.com/wp-content/uploads/2023/05/Phone-S
 def main():
     # Sidebar components for user input
     operating_system = st.selectbox('Select Operating System', list(df['Operating System'].unique()))
-    storage_space = st.slider('Select Storage Space (GB)', min_value=0, max_value=int(df['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').astype(float).max()), step=1)
+    show_storage = st.checkbox('Filter by Storage Space')
+    storage_space = st.slider('Select Storage Space (GB)', min_value=0, max_value=int(df['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').astype(float).max()), step=1) if show_storage else None
 
     st.subheader('Connectivity')
     with st.beta_expander('Connectivity Options'):
@@ -53,7 +54,7 @@ def main():
     # Filter the data based on the selected criteria
     filtered_data = df[
         (df['Operating System'] == operating_system) &
-        (df['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').astype(float) >= storage_space) &
+        (df['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').astype(float) >= storage_space) if show_storage else True &
         (df['Connectivity'].str.contains('5G') == is_5g) &
         (df['Connectivity'].str.contains('4G') == is_4g) &
         (df['Connectivity'].str.contains('Wi-Fi') == is_wifi) &
@@ -70,7 +71,7 @@ def main():
     ]
 
     # Display the filtered data
-    if st.button('Recommend Phone'):
+    if st.button('Filter'):
         if not filtered_data.empty:
             st.write("Phone Models that meet the criteria:")
             st.dataframe(filtered_data)
@@ -78,7 +79,8 @@ def main():
             st.write("No Phone Models meet the criteria.")
 
     if st.button('Reset'):
-        filtered_data = pd.DataFrame()  # Reset the filtered data
+        filtered_data=pd.DataFrame()
+        st.session_state.clear()  # Clear all session state variables
 
 if __name__ == '__main__':
     main()
