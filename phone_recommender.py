@@ -71,7 +71,7 @@ def main():
     ]
 
     # Display the filtered data
-    if st.button('Filter'):
+    if st.button('Recommend Phone'):
         if not filtered_data.empty:
             st.write("Phone Models that meet the criteria:")
             st.dataframe(filtered_data)
