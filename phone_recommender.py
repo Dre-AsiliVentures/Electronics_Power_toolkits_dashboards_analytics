@@ -79,7 +79,7 @@ def main():
             st.write("No Phone Models meet the criteria.")
 
     if st.button('Clear Recommendations'):
-        st.caching.clear_cache()  # Clear the cache
+        #st.caching.clear_cache()  # Clear the cache
         st.experimental_rerun()  # Rerun the app
 
 if __name__ == '__main__':
