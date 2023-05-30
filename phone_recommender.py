@@ -56,7 +56,7 @@ def main():
 
     with st.beta_expander('Camera'):
         #front_camera = st.slider('Front Camera (MP)', min_value=0, max_value=int(df['Front Camera'].astype(float).max()), step=1)
-        front_camera = st.slider('Front Camera (MP)', min_value=0, max_value=int(df['Front Camera'].str.extract('(\d+)').max()), step=1)
+        front_camera = st.slider('Front Camera (MP)', min_value=0, max_value=int(df['Front Camera'].max()), step=1)
         #front_camera = st.slider('Front Camera (MP)', min_value=0, max_value=int(df['Front Camera'].str.replace('\D', '', regex=True).str.strip().str.extract('(\d+)').astype(float).dropna().max()), step=1)
         #front_camera = st.slider('Front Camera (MP)', min_value=0, max_value=int(df['Front Camera'].str.replace('\D', '', regex=True).str.strip().astype(float).dropna().max()), step=1)
         rear_camera = st.slider('Rear Camera (MP)', min_value=0, max_value=int(df['Front Camera'].astype(float).dropna().max()), step=1)
