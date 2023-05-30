@@ -26,7 +26,10 @@ def main():
         if st.checkbox('NFC'):
             connectivity_filters.append('NFC')
         filtered_data = filtered_data[filtered_data['Connectivity'].str.contains('|'.join(connectivity_filters))]
-
+    with st.beta_expander('Camera'):
+        camera_filters=[]
+        front_camera = st.slider("Select Front Camera Mega Pixel Rating",min_value=0, max_value=df['Front Camera']).max())
+        filtered_data = filtered_data[filtered_data['Front Camera'].rstrip('MP')
     with st.beta_expander('Design & Build Quality'):
         design_filters = []
         if st.checkbox('Glass'):
