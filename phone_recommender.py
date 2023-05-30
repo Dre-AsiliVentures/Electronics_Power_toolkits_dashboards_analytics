@@ -71,7 +71,7 @@ def main():
 
 
     # Display the filtered data
-    if st.button('Filter'):
+    if st.button('Recommend Phone'):
         if not filtered_data.empty:
             st.write("Phone Models that meet the criteria:")
             st.dataframe(filtered_data['Phone Model'])
@@ -79,6 +79,7 @@ def main():
             st.write("No Phone Models meet the criteria.")
 
     if st.button('Reset'):
+        st.caching.clear_cache()  # Clear the cache
         st.experimental_rerun()  # Rerun the app
 
 if __name__ == '__main__':
