@@ -74,7 +74,7 @@ def main():
     if st.button('Recommend Phone(s)'):
         if not filtered_data.empty:
             st.write("Phone Models that meet the criteria:")
-            st.dataframe(filtered_data['Phone Model'])
+            st.dataframe(filtered_data['Phone Model']).reset_index(drop=True))  # Remove the index using reset_index()
             if st.button('Clear Recommendations'):
                 #st.caching.clear_cache()  # Clear the cache
                 st.experimental_rerun()  # Rerun the app
