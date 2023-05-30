@@ -55,11 +55,11 @@ def main():
         filtered_data = filtered_data[filtered_data['Security & Privacy'].str.contains('|'.join(security_filters))]
 
     with st.beta_expander('Camera'):
-        front_camera = st.slider('Front Camera (MP)', min_value=0, max_value=int(df['Front Camera'].str.extract('(\d+)').astype(float).max()), step=1)
+        front_camera = st.slider('Front Camera (MP)', min_value=0, max_value=int(df['Front Camera'].astype(float).max()), step=1)
         #front_camera = st.slider('Front Camera (MP)', min_value=0, max_value=int(df['Front Camera'].str.replace('\D', '', regex=True).str.strip().str.extract('(\d+)').astype(float).dropna().max()), step=1)
         #front_camera = st.slider('Front Camera (MP)', min_value=0, max_value=int(df['Front Camera'].str.replace('\D', '', regex=True).str.strip().astype(float).dropna().max()), step=1)
-        rear_camera = st.slider('Rear Camera (MP)', min_value=0, max_value=int(df['Front Camera'].str.replace('\D', '', regex=True).str.strip().astype(float).dropna().max()), step=1)
-        ultrawide_camera = st.slider('Ultrawide Camera (MP)', min_value=0, max_value=int(df['Front Camera'].str.replace('\D', '', regex=True).str.strip().astype(float).dropna().max()), step=1)
+        rear_camera = st.slider('Rear Camera (MP)', min_value=0, max_value=int(df['Front Camera'].astype(float).dropna().max()), step=1)
+        ultrawide_camera = st.slider('Ultrawide Camera (MP)', min_value=0, max_value=int(df['Front Camera'].astype(float).dropna().max()), step=1)
 
         filtered_data = filtered_data[
             filtered_data['Front Camera'].str.replace('\D', '').astype(float) >= front_camera &
