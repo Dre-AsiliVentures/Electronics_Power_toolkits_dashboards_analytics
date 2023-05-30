@@ -75,12 +75,13 @@ def main():
         if not filtered_data.empty:
             st.write("Phone Models that meet the criteria:")
             st.dataframe(filtered_data['Phone Model'])
+                if st.button('Clear Recommendations'):
+                    #st.caching.clear_cache()  # Clear the cache
+                    st.experimental_rerun()  # Rerun the app
         else:
             st.write("No Phone Models meet the criteria.")
 
-    if st.button('Clear Recommendations'):
-        #st.caching.clear_cache()  # Clear the cache
-        st.experimental_rerun()  # Rerun the app
+
 
 if __name__ == '__main__':
     main()
