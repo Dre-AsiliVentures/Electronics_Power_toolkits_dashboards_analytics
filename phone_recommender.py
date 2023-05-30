@@ -67,7 +67,7 @@ def main():
         #    filtered_data['Rear Camera'].astype(float) >= rear_camera &
         #    filtered_data['Ultrawide Camera'].astype(float) >= ultrawide_camera
         #]
-        filtered_data = df[(df['Front Camera'].astype(int) == front_camera) & (df['Rear Camera'].astype(int) == rear_camera) & (df['Ultrawide Camera'].astype(int) == ultrawide_camera)]
+        filtered_data = df[(df['Front Camera'].astype(int) >= front_camera) & (df['Rear Camera'].astype(int) >= rear_camera) & (df['Ultrawide Camera'].astype(int) >= ultrawide_camera)]
 
 
     # Display the filtered data
