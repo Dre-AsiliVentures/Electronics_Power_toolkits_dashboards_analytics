@@ -7,45 +7,51 @@ def main():
     # Sidebar components for user input
     operating_system = st.selectbox('Select Operating System', list(df['Operating System'].unique()))
 
-    # Filtered data
+   # Filtered data
     filtered_data = df[df['Operating System'] == operating_system]
-
     # Apply additional filters based on user selections
     if st.checkbox('Filter by Storage Space'):
         storage_space = st.slider('Select Storage Space (GB)', min_value=0, max_value=int(df['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').astype(float).max()), step=1)
         filtered_data = filtered_data[filtered_data['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').astype(float) >= storage_space]
 
     with st.beta_expander('Connectivity'):
+        connectivity_filters = []
         if st.checkbox('5G'):
-            filtered_data = filtered_data[filtered_data['Connectivity'].str.contains('5G')]
+            connectivity_filters.append('5G')
         if st.checkbox('4G'):
-            filtered_data = filtered_data[filtered_data['Connectivity'].str.contains('4G')]
+            connectivity_filters.append('4G')
         if st.checkbox('Wi-Fi'):
-            filtered_data = filtered_data[filtered_data['Connectivity'].str.contains('Wi-Fi')]
+            connectivity_filters.append('Wi-Fi')
         if st.checkbox('NFC'):
-            filtered_data = filtered_data[filtered_data['Connectivity'].str.contains('NFC')]
+            connectivity_filters.append('NFC')
+        filtered_data = filtered_data[filtered_data['Connectivity'].str.contains('|'.join(connectivity_filters))]
 
     with st.beta_expander('Design & Build Quality'):
+        design_filters = []
         if st.checkbox('Glass'):
-            filtered_data = filtered_data[filtered_data['Design and Build Quality'].str.contains('Glass')]
+            design_filters.append('Glass')
         if st.checkbox('Stainless Steel'):
-            filtered_data = filtered_data[filtered_data['Design and Build Quality'].str.contains('Stainless Steel')]
+            design_filters.append('Stainless Steel')
         if st.checkbox('Aluminium'):
-            filtered_data = filtered_data[filtered_data['Design and Build Quality'].str.contains('Aluminium')]
+            design_filters.append('Aluminium')
         if st.checkbox('Ceramic'):
-            filtered_data = filtered_data[filtered_data['Design and Build Quality'].str.contains('Ceramic')]
+            design_filters.append('Ceramic')
         if st.checkbox('Polycarbonate'):
-            filtered_data = filtered_data[filtered_data['Design and Build Quality'].str.contains('Polycarbonate')]
+            design_filters.append('Polycarbonate')
+        filtered_data = filtered_data[filtered_data['Design and Build Quality'].str.contains('|'.join(design_filters))]
 
     with st.beta_expander('Security & Privacy'):
+        security_filters = []
         if st.checkbox('Face ID or Facial Recognition'):
-            filtered_data = filtered_data[filtered_data['Security & Privacy'].str.contains('Face ID')]
+            security_filters.append('Face ID')
         if st.checkbox('In-Display Fingerprint'):
-            filtered_data = filtered_data[filtered_data['Security & Privacy'].str.contains('In-Display Fingerprint')]
+            security_filters.append('In-Display Fingerprint')
         if st.checkbox('Side-Mounted Fingerprint'):
-            filtered_data = filtered_data[filtered_data['Security & Privacy'].str.contains('Side-Mounted Fingerprint')]
+            security_filters.append('Side-Mounted Fingerprint')
         if st.checkbox('Rear-Mounted Fingerprint'):
-            filtered_data = filtered_data[filtered_data['Security & Privacy'].str.contains('Rear-Mounted Fingerprint')]
+            security_filters.append('Rear-Mounted Fingerprint')
+        filtered_data = filtered_data[filtered_data['Security & Privacy'].str.contains('|'.join(security_filters))]
+
 
     # Display the filtered data
     if st.button('Filter'):
