@@ -49,7 +49,7 @@ def main():
         if st.checkbox('Side-Mounted Fingerprint'):
             security_filters.append('Side-mounted Fingerprint')
         if st.checkbox('Rear-Mounted Fingerprint'):
-            security_filters.append('Rear-Mounted Fingerprint')
+            security_filters.append('Rear-mounted Fingerprint')
         filtered_data = filtered_data[filtered_data['Security & Privacy'].str.contains('|'.join(security_filters))]
 
 
