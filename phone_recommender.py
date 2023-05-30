@@ -45,9 +45,9 @@ def main():
         if st.checkbox('Face ID or Facial Recognition'):
             security_filters.append('Face ID')
         if st.checkbox('In-Display Fingerprint'):
-            security_filters.append('In-Display Fingerprint')
+            security_filters.append('In-display Fingerprint')
         if st.checkbox('Side-Mounted Fingerprint'):
-            security_filters.append('Side-Mounted Fingerprint')
+            security_filters.append('Side-mounted Fingerprint')
         if st.checkbox('Rear-Mounted Fingerprint'):
             security_filters.append('Rear-Mounted Fingerprint')
         filtered_data = filtered_data[filtered_data['Security & Privacy'].str.contains('|'.join(security_filters))]
