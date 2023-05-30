@@ -55,14 +55,14 @@ def main():
         filtered_data = filtered_data[filtered_data['Security & Privacy'].str.contains('|'.join(security_filters))]
 
     with st.beta_expander('Camera'):
-        front_camera = st.slider('Front Camera (MP)', min_value=0, max_value=int(df['Front Camera'].str.rstrip('MP').astype(float).max()), step=1)
-        rear_camera = st.slider('Rear Camera (MP)', min_value=0, max_value=int(df['Rear Camera'].str.rstrip('MP').astype(float).max()), step=1)
-        ultrawide_camera = st.slider('Ultrawide Camera (MP)', min_value=0, max_value=int(df['Ultrawide Camera'].str.rstrip('MP').astype(float).max()), step=1)
+        front_camera = st.slider('Front Camera (MP)', min_value=0, max_value=int(df['Front Camera'].str.replace('\D', '').astype(float).max()), step=1)
+        rear_camera = st.slider('Rear Camera (MP)', min_value=0, max_value=int(df['Rear Camera'].str.replace('\D', '').astype(float).max()), step=1)
+        ultrawide_camera = st.slider('Ultrawide Camera (MP)', min_value=0, max_value=int(df['Ultrawide Camera'].str.replace('\D', '').astype(float).max()), step=1)
 
         filtered_data = filtered_data[
-            filtered_data['Front camera'].str.rstrip('MP').astype(float) >= front_camera &
-            filtered_data['Rear Camera'].str.rstrip('MP').astype(float) >= rear_camera &
-            filtered_data['Ultrawide Camera'].str.rstrip('MP').astype(float) >= ultrawide_camera
+            filtered_data['Front Camera'].str.replace('\D', '').astype(float) >= front_camera &
+            filtered_data['Rear Camera'].str.replace('\D', '').astype(float) >= rear_camera &
+            filtered_data['Ultrawide Camera'].str.replace('\D', '').astype(float) >= ultrawide_camera
         ]
 
     # Display the filtered data
