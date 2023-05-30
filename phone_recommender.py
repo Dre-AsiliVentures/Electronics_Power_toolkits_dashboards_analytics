@@ -7,8 +7,9 @@ def main():
     # Sidebar components for user input
     operating_system = st.selectbox('Select Operating System', list(df['Operating System'].unique()))
 
-   # Filtered data
+    # Filtered data
     filtered_data = df[df['Operating System'] == operating_system]
+
     # Apply additional filters based on user selections
     with st.beta_expander('Storage'):
         if st.checkbox('Filter by Storage Space'):
@@ -53,6 +54,16 @@ def main():
             security_filters.append('Rear-mounted Fingerprint')
         filtered_data = filtered_data[filtered_data['Security & Privacy'].str.contains('|'.join(security_filters))]
 
+    with st.beta_expander('Camera'):
+        front_camera = st.slider('Front Camera (MP)', min_value=0, max_value=int(df['Front camera'].str.rstrip('MP').astype(float).max()), step=1)
+        rear_camera = st.slider('Rear Camera (MP)', min_value=0, max_value=int(df['Rear Camera'].str.rstrip('MP').astype(float).max()), step=1)
+        ultrawide_camera = st.slider('Ultrawide Camera (MP)', min_value=0, max_value=int(df['Ultrawide Camera'].str.rstrip('MP').astype(float).max()), step=1)
+
+        filtered_data = filtered_data[
+            filtered_data['Front camera'].str.rstrip('MP').astype(float) >= front_camera &
+            filtered_data['Rear Camera'].str.rstrip('MP').astype(float) >= rear_camera &
+            filtered_data['Ultrawide Camera'].str.rstrip('MP').astype(float) >= ultrawide_camera
+        ]
 
     # Display the filtered data
     if st.button('Filter'):
