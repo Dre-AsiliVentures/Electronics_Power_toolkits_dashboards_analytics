@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 # Load the laptop specifications table
-df = pd.read_csv('laptop_specs.csv')
+df = pd.read_excel('https://asiliventures.com/wp-content/uploads/2023/06/Laptop-Specifications.xlsx')
 
 # Create a sidebar
 st.sidebar.markdown('**Laptop Recommendations**')
