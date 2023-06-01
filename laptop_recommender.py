@@ -23,7 +23,7 @@ ram = st.sidebar.slider('RAM', min_value=4, max_value=64, value=8)
 internal_storage = st.sidebar.slider('Internal Storage', min_value=32, max_value=2048, value=512)
 
 # Convert the internal storage slider value to GB
-internal_storage_gb = int(internal_storage.split('GB')[0])
+internal_storage_gb = internal_storage
 
 # Create a slider for the price
 price = st.sidebar.slider('Price', min_value=500, max_value=5000, value=1000)
