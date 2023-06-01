@@ -3,6 +3,8 @@ import pandas as pd
 
 # Load the laptop specifications table
 df = pd.read_excel('https://asiliventures.com/wp-content/uploads/2023/06/Laptop-Specifications.xlsx')
+# Load the laptop specifications table
+df = pd.read_csv('laptop_specs.csv')
 
 # Create a sidebar
 st.sidebar.markdown('**Laptop Recommendations**')
@@ -15,8 +17,7 @@ touchscreen = st.sidebar.checkbox('Touchscreen')
 
 # Create a dropdown menu for the display type
 display_type = st.sidebar.selectbox('Display Type',
-    options=['IPS', 'OLED', 'QHD', '4K'],
-    default='IPS')
+    options=['IPS', 'OLED', 'QHD', '4K'])
 
 # Create a slider for the display resolution
 display_resolution = st.sidebar.slider('Display Resolution', min_value=1080, max_value=4096, value=1920)
@@ -37,10 +38,11 @@ price = st.sidebar.slider('Price', min_value=500, max_value=5000, value=1000)
 st.markdown('**Laptop Recommendations**')
 
 # If the user has entered any requirements, filter the table and display the results
-if intel_core_version != 1 or touchscreen or display_type != 'IPS' or display_resolution != 1920 or fingerprint_face_id or ram != 8 or internal_storage != 512 or price != 1000:
-    filtered_df = df[(df['Intel Core Version'] == intel_core_version) & (df['Touchscreen'] == touchscreen) & (df['Display Type'].isin(display_type)) & (df['Display Resolution'] == display_resolution) & (df['Fingerprint/Face ID'] == fingerprint_face_id) & (df['RAM'] >= ram) & (df['Internal Storage'] >= internal_storage) & (df['Price'] <= price)]
+if intel_core_version != 1 or touchscreen or display_type or display_resolution != 1920 or fingerprint_face_id or ram != 8 or internal_storage != 512 or price != 1000:
+    filtered_df = df[(df['Intel Core Version'] == intel_core_version) & (df['Touchscreen'] == touchscreen) & (df['Display Type'] == display_type) & (df['Display Resolution'] == display_resolution) & (df['Fingerprint/Face ID'] == fingerprint_face_id) & (df['RAM'] >= ram) & (df['Internal Storage'] >= internal_storage) & (df['Price'] <= price)]
     st.table(filtered_df)
 
 # Otherwise, display all the laptops in the table
 else:
     st.table(df)
+
