@@ -16,7 +16,7 @@ def main():
             storage_space = st.slider('Select Internal Storage Space (GB)', min_value=0, max_value=int(df['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').astype(float).max()), step=1)
             filtered_data = filtered_data[filtered_data['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').astype(float) >= storage_space]
 
-    with st.beta_expander('Connectivity'):
+    with st.expander('Connectivity'):
         connectivity_filters = []
         if st.checkbox('5G'):
             connectivity_filters.append('5G')
@@ -28,7 +28,7 @@ def main():
             connectivity_filters.append('NFC')
         filtered_data = filtered_data[filtered_data['Connectivity'].str.contains('|'.join(connectivity_filters))]
 
-    with st.beta_expander('Design & Build Quality'):
+    with st.expander('Design & Build Quality'):
         design_filters = []
         if st.checkbox('Glass'):
             design_filters.append('Glass')
@@ -42,7 +42,7 @@ def main():
             design_filters.append('Polycarbonate')
         filtered_data = filtered_data[filtered_data['Design and Build Quality'].str.contains('|'.join(design_filters))]
 
-    with st.beta_expander('Security & Privacy'):
+    with st.expander('Security & Privacy'):
         security_filters = []
         if st.checkbox('Face ID or Facial Recognition'):
             security_filters.append('Face ID')
