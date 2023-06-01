@@ -3,6 +3,7 @@ import pandas as pd
 
 # Load the laptop specifications table
 df = pd.read_excel('https://asiliventures.com/wp-content/uploads/2023/06/Laptop-Specifications.xlsx')
+
 # Create a sidebar
 st.sidebar.markdown('**Laptop Recommendations**')
 
@@ -26,17 +27,12 @@ st.markdown('**Laptop Recommendations**')
 
 # If the user has entered any requirements, filter the table and display the results
 if intel_core_version != 1 or fingerprint_face_id or ram != 8 or internal_storage != 512 or price != 1000:
-    filtered_df = df[(df['Intel Core Version'] == intel_core_version) & (df['Fingerprint/Face ID'] == fingerprint_face_id) & (df['RAM'] >= ram) & (df['Internal Storage'] >= internal_storage) & (df['Price'] <= price)]
-
-    # Check if the user wants a touchscreen laptop
-    touchscreen = st.sidebar.checkbox('Touchscreen')
-    if touchscreen:
-        filtered_df = filtered_df[filtered_df['Touchscreen'] == 'Yes']
-
+    filtered_df = df[(df['Intel Core Version'] == intel_core_version) & (df['Fingerprint/Face ID'].isin([True, False])) & (df['RAM'] >= ram) & (df['Internal Storage'] >= internal_storage) & (df['Price'] <= price)]
     st.table(filtered_df)
 
 # Otherwise, display all the laptops in the table
 else:
     st.table(df)
+
 
 
