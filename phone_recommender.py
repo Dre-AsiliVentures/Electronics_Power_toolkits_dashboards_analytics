@@ -11,7 +11,7 @@ def main():
     filtered_data = df[df['Operating System'] == operating_system]
 
     # Apply additional filters based on user selections
-    with st.beta_expander('Storage'):
+    with st.expander('Storage'):
         if st.checkbox('Filter by Storage Space'):
             storage_space = st.slider('Select Internal Storage Space (GB)', min_value=0, max_value=int(df['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').astype(float).max()), step=1)
             filtered_data = filtered_data[filtered_data['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').astype(float) >= storage_space]
