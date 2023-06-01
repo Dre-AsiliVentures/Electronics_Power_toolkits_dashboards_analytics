@@ -33,7 +33,7 @@ st.markdown('**Laptop Recommendations**')
 
 # If the user has entered any requirements, filter the table and display the results
 if intel_core_version != 1 or fingerprint_face_id or ram != 8 or internal_storage_gb != 512 or price != 1000:
-    filtered_df = df[(df['Intel Core Version'] == intel_core_version) & (df['Fingerprint/Face ID'].isin(['Yes'])) & (df['RAM'] >= int(ram.split('GB')[0])) & (df['Internal Storage Capacity'] >= internal_storage_gb) & (df['Price'] <= price)]
+    filtered_df = df[(df['Intel Core Version'] == intel_core_version) & (df['Fingerprint/Face ID'].isin(['Yes'])) & (df['RAM'] >= int(ram.split('GB')[0])) & (df['Internal Storage Capacity'] >= int(internal_storage_gb.split('GB')[0])) & (df['Price'] <= price)]
     st.table(filtered_df)
 
 # Otherwise, display all the laptops in the table
