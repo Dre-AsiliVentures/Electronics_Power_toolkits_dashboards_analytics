@@ -1,87 +1,46 @@
 import streamlit as st
 import pandas as pd
 
-df = pd.read_excel('https://asiliventures.com/wp-content/uploads/2023/05/Phone-Specifications.xlsx')
+# Load the laptop specifications table
+df = pd.read_csv('laptop_specs.csv')
 
-def main():
-    # Sidebar components for user input
-    operating_system = st.selectbox('Select Operating System', list(df['Operating System'].unique()))
+# Create a sidebar
+st.sidebar.markdown('**Laptop Recommendations**')
 
-    # Filtered data
-    filtered_data = df[df['Operating System'] == operating_system]
+# Create a slider for the Intel Core version
+intel_core_version = st.sidebar.slider('Intel Core Version', min_value=1, max_value=12, value=1)
 
-    # Apply additional filters based on user selections
-    with st.beta_expander('Storage'):
-        if st.checkbox('Filter by Storage Space'):
-            storage_space = st.slider('Select Internal Storage Space (GB)', min_value=0, max_value=int(df['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').astype(float).max()), step=1)
-            filtered_data = filtered_data[filtered_data['Storage Capacity'].str.split('/').str[1].str.rstrip('GB').astype(float) >= storage_space]
+# Create a checkbox for touchscreen compatibility
+touchscreen = st.sidebar.checkbox('Touchscreen')
 
-    with st.beta_expander('Connectivity'):
-        connectivity_filters = []
-        if st.checkbox('5G'):
-            connectivity_filters.append('5G')
-        if st.checkbox('4G'):
-            connectivity_filters.append('4G')
-        if st.checkbox('Wi-Fi'):
-            connectivity_filters.append('Wi-Fi')
-        if st.checkbox('NFC'):
-            connectivity_filters.append('NFC')
-        filtered_data = filtered_data[filtered_data['Connectivity'].str.contains('|'.join(connectivity_filters))]
+# Create a dropdown menu for the display type
+display_type = st.sidebar.selectbox('Display Type',
+    options=['IPS', 'OLED', 'QHD', '4K'],
+    default='IPS')
 
-    with st.beta_expander('Design & Build Quality'):
-        design_filters = []
-        if st.checkbox('Glass'):
-            design_filters.append('Glass')
-        if st.checkbox('Stainless Steel'):
-            design_filters.append('Stainless Steel')
-        if st.checkbox('Aluminium'):
-            design_filters.append('Aluminium')
-        if st.checkbox('Ceramic'):
-            design_filters.append('Ceramic')
-        if st.checkbox('Polycarbonate'):
-            design_filters.append('Polycarbonate')
-        filtered_data = filtered_data[filtered_data['Design and Build Quality'].str.contains('|'.join(design_filters))]
+# Create a slider for the display resolution
+display_resolution = st.sidebar.slider('Display Resolution', min_value=1080, max_value=4096, value=1920)
 
-    with st.beta_expander('Security & Privacy'):
-        security_filters = []
-        if st.checkbox('Face ID or Facial Recognition'):
-            security_filters.append('Face ID')
-        if st.checkbox('In-Display Fingerprint'):
-            security_filters.append('In-display Fingerprint')
-        if st.checkbox('Side-Mounted Fingerprint'):
-            security_filters.append('Side-mounted Fingerprint')
-        if st.checkbox('Rear-Mounted Fingerprint'):
-            security_filters.append('Rear-mounted Fingerprint')
-        filtered_data = filtered_data[filtered_data['Security & Privacy'].str.contains('|'.join(security_filters))]
+# Create a checkbox for fingerprint/face ID availability
+fingerprint_face_id = st.sidebar.checkbox('Fingerprint/Face ID')
 
-#     with st.beta_expander('Camera'):
-#         #front_camera = st.slider('Front Camera (MP)', min_value=0, max_value=int(df['Front Camera'].astype(float).max()), step=1)
-#         front_camera = st.slider('Front Camera (MP)', min_value=0, max_value=int(df['Front Camera'].max()), step=1)
-#         #front_camera = st.slider('Front Camera (MP)', min_value=0, max_value=int(df['Front Camera'].str.replace('\D', '', regex=True).str.strip().str.extract('(\d+)').astype(float).dropna().max()), step=1)
-#         #front_camera = st.slider('Front Camera (MP)', min_value=0, max_value=int(df['Front Camera'].str.replace('\D', '', regex=True).str.strip().astype(float).dropna().max()), step=1)
-#         rear_camera = st.slider('Rear Camera (MP)', min_value=0, max_value=int(df['Front Camera'].max()), step=1)
-#         ultrawide_camera = st.slider('Ultrawide Camera (MP)', min_value=0, max_value=int(df['Front Camera'].max()), step=1)
+# Create a slider for the RAM
+ram = st.sidebar.slider('RAM', min_value=4, max_value=64, value=8)
 
-#         #filtered_data = filtered_data[
-#         #    filtered_data['Front Camera'].astype(float) >= front_camera &
-#         #    filtered_data['Rear Camera'].astype(float) >= rear_camera &
-#         #    filtered_data['Ultrawide Camera'].astype(float) >= ultrawide_camera
-#         #]
-#         filtered_data = df[(df['Front Camera'].astype(int) >= front_camera) & (df['Rear Camera'].astype(int) >= rear_camera) & (df['Ultrawide Camera'].astype(int) >= ultrawide_camera)]
+# Create a slider for the internal storage
+internal_storage = st.sidebar.slider('Internal Storage', min_value=32, max_value=1024, value=512)
 
+# Create a slider for the price
+price = st.sidebar.slider('Price', min_value=500, max_value=5000, value=1000)
 
-    # Display the filtered data
-    if st.button('Recommend Phone(s)'):
-        if not filtered_data.empty:
-            st.write("Phone Models that meet the criteria:")
-            st.dataframe(filtered_data['Phone Model'].reset_index(drop=True))  # Remove the index using reset_index()
-            if st.button('Clear Recommendations'):
-                #st.caching.clear_cache()  # Clear the cache
-                st.experimental_rerun()  # Rerun the app
-        else:
-            st.write("No Phone Models meet the criteria.")
+# Create a main area
+st.markdown('**Laptop Recommendations**')
 
+# If the user has entered any requirements, filter the table and display the results
+if intel_core_version != 1 or touchscreen or display_type != 'IPS' or display_resolution != 1920 or fingerprint_face_id or ram != 8 or internal_storage != 512 or price != 1000:
+    filtered_df = df[(df['Intel Core Version'] == intel_core_version) & (df['Touchscreen'] == touchscreen) & (df['Display Type'] == display_type) & (df['Display Resolution'] == display_resolution) & (df['Fingerprint/Face ID'] == fingerprint_face_id) & (df['RAM'] >= ram) & (df['Internal Storage'] >= internal_storage) & (df['Price'] <= price)]
+    st.table(filtered_df)
 
-
-if __name__ == '__main__':
-    main()
+# Otherwise, display all the laptops in the table
+else:
+    st.table(df)
