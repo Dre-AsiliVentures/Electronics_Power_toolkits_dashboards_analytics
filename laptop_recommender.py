@@ -13,6 +13,7 @@ def convert_storage_capacity(value):
         return 0
 
 def main():
+    global df  # Declare df as a global variable to be accessible within the function
     intel_core_version = st.selectbox('Select Intel Core Version', list(df['Intel Core Version'].unique()))
     with st.expander('Capacity & Storage'):
         internal_storage = st.slider('Internal Storage (in GB)', min_value=32, max_value=2048, value=512)
