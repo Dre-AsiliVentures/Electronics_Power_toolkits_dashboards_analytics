@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 
-df = pd.read_excel('https://asiliventures.com/wp-content/uploads/2023/05/Phone-Specifications.xlsx')
+df = pd.read_excel('https://asiliventures.com/wp-content/uploads/2023/06/Phone-Specifications.xlsx')
 
 def main():
     # Sidebar components for user input
