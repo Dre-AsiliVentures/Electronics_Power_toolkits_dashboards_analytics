@@ -52,9 +52,10 @@ def main():
                                      (df_filtered['RAM Storage Capacity'].apply(convert_storage_capacity) >= ram) &
                                      (df_filtered['Internal Storage Capacity'].apply(convert_storage_capacity) >= internal_storage) &
                                      (df_filtered['Price'] <= price)]
-        st.dataframe(recommended_df[['Laptop Model Name', 'Price']])
-        #st.success(f"Recommended Laptop Models:\n\n{', '.join(laptop_models)}")
-        if st.button('Clear Recommendations'):
+        if not recommended_df.empty():
+            st.dataframe(recommended_df[['Laptop Model Name', 'Price']])
+            #st.success(f"Recommended Laptop Models:\n\n{', '.join(laptop_models)}")
+            if st.button('Clear Recommendations'):
                 #st.caching.clear_cache()  # Clear the cache
                 st.experimental_rerun()  # Rerun the app
 
