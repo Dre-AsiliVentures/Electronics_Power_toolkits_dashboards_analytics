@@ -22,17 +22,23 @@ def main():
     if st.checkbox('Backlight Keyboard'):
         df_filtered = df[df['Backlight Keyboard Availability'] == 'Yes']
     else:
-        df_filtered = df
+        df_filtered = df[df['Backlight Keyboard Availability'] == 'No']
     if st.checkbox('Touchscreen Compatibility'):
         df_filtered = df_filtered[df_filtered['Touchscreen Compatibility'] == 'Yes']
+    else:
+        df_filtered = df_filtered[df_filtered['Touchscreen Compatibility'] == 'No']
     generation_version = st.selectbox('Select Generation Version', list(df_filtered['Generation Version'].unique()))
     with st.expander('Display Features'):
         display_type = st.selectbox('Display Type', list(df_filtered['Display Type'].unique()))
         display_quality = st.selectbox('Display Quality', list(df_filtered['Display Quality'].unique()))
     if st.checkbox('Sim Card Slot Availability'):
         df_filtered = df_filtered[df_filtered['Sim Card Slot Availability'] == 'Yes']
+    else:
+        df_filtered = df_filtered[df_filtered['Sim Card Slot Availability'] == 'No']
     if st.checkbox('Fingerprint/Face ID Availability'):
         df_filtered = df_filtered[df_filtered['Fingerprint/Face ID Availability'] == 'Yes']
+    else:
+        df_filtered = df_filtered[df_filtered['Fingerprint/Face ID Availability'] == 'No']
     if st.checkbox('Bluetooth Availability'):
         df_filtered = df_filtered[df_filtered['Bluetooth Availability'] == 'Yes']
     no_of_usb = st.selectbox('No. of USB Ports', list(df_filtered['No. of USB Ports'].unique()))
@@ -53,10 +59,6 @@ def main():
                                      (df_filtered['Internal Storage Capacity'].apply(convert_storage_capacity) >= internal_storage) &
                                      (df_filtered['Price'] <= price)]
         st.dataframe(recommended_df[['Laptop Model Name', 'Price']])
-        #st.success(f"Recommended Laptop Models:\n\n{', '.join(laptop_models)}")
-        if st.button('Clear Recommendations'):
-            #st.caching.clear_cache()  # Clear the cache
-            st.experimental_rerun()  # Rerun the app
 
 if __name__ == "__main__":
     main()
