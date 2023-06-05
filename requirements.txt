@@ -1,5 +1,5 @@
 #forex_python
-#openpyxl
+openpyxl
 pandas
 pycountry
 streamlit
