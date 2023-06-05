@@ -46,11 +46,13 @@ def main():
     price = st.slider('Price', min_value=500, max_value=5000, value=300)
 
     if st.button('Recommend Laptops'):
+        df['Price'] = pd.to_numeric(df['Price'], errors='coerce')
         recommended_df = df[(df['Intel Core Version'] == intel_core_version) &
                             (df['RAM Storage Capacity'].apply(convert_storage_capacity) >= ram) &
                             (df['Internal Storage Capacity'].apply(convert_storage_capacity) >= internal_storage) &
                             (df['Price'] <= price)]
-        st.table(recommended_df[['Laptop Model Name']])
+        laptop_models = recommended_df['Laptop Model Name'].tolist()
+        st.success(f"Recommended Laptop Models:\n\n{', '.join(laptop_models)}")
 
 if __name__ == "__main__":
     main()
